@@ -48,32 +48,59 @@
      - Create feature branch from `develop`: `git checkout -b feature/123-feature-name develop`
      - Develop and test feature
      - Keep feature branch updated with develop: `git rebase develop`
-     - Create PR to merge into `develop`
-     - After review and approval, merge to `develop`
-     - Delete feature branch
+     - For solo development: Direct push to `develop` is allowed
+     - For team development: Create PR to merge into `develop`
+     - Delete feature branch after merging
 
    - **Bug Fixes**:
      - Create bugfix branch from `develop`: `git checkout -b bugfix/456-bug-description develop`
      - Fix and test the bug
-     - Create PR to merge into `develop`
-     - After review and approval, merge to `develop`
-     - Delete bugfix branch
+     - For solo development: Direct push to `develop` is allowed
+     - For team development: Create PR to merge into `develop`
+     - Delete bugfix branch after merging
 
    - **Hotfixes**:
      - Create hotfix branch from `main`: `git checkout -b hotfix/789-hotfix-description main`
      - Fix and test the issue
-     - Create PR to merge into both `main` and `develop`
-     - After review and approval, merge to both branches
-     - Delete hotfix branch
+     - For solo development: Direct push to both `main` and `develop` is allowed
+     - For team development: Create PR to merge into both `main` and `develop`
+     - Delete hotfix branch after merging
 
    - **Releases**:
-     - Create release branch from `develop`: `git checkout -b release/1.0.0 develop`
-     - Perform release testing and fixes
-     - Version bump and changelog updates
-     - Create PR to merge into both `main` and `develop`
-     - After review and approval, merge to both branches
-     - Tag the release in `main`
-     - Delete release branch
+     - Version format: `vX.Y.Z` (e.g., v1.0.0)
+       - X: Major version (breaking changes)
+       - Y: Minor version (new features)
+       - Z: Patch version (bug fixes)
+     - Release branch creation:
+       ```bash
+       # From develop branch
+       git checkout develop
+       git pull origin develop
+       
+       # Create release branch
+       git checkout -b release/v1.0.0
+       
+       # Update version numbers and changelog
+       # Commit changes with message: "chore(release): prepare v1.0.0"
+       
+       # Push release branch
+       git push -u origin release/v1.0.0
+       ```
+     - Release process:
+       1. Create release branch from `develop`
+       2. Update version numbers in code
+       3. Update CHANGELOG.md
+       4. Commit changes with release preparation message
+       5. For solo development: 
+          - Merge to `main`: `git checkout main && git merge release/v1.0.0`
+          - Tag release: `git tag -a v1.0.0 -m "Release v1.0.0"`
+          - Push changes: `git push origin main --tags`
+          - Merge to `develop`: `git checkout develop && git merge main`
+       6. For team development:
+          - Create PRs to merge into both `main` and `develop`
+          - After approval, merge to both branches
+          - Tag the release in `main`
+       7. Delete release branch after merging
 
 5. **Commit Message Rules**
    - Format: `type(scope): description`
@@ -177,4 +204,4 @@
 3. **Issue Tracking**
    - Update issue status
    - Link related changes
-   - Document workarounds 
+   - Document workarounds
