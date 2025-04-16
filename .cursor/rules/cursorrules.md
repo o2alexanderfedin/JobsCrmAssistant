@@ -17,6 +17,21 @@
    - Add new test cases for edge cases
    - Ensure all tests pass before committing
 
+## Repository Management
+
+1. **GitHub CLI Usage**
+   - Use GitHub CLI (`gh`) for repository operations whenever possible
+   - Create repositories using `gh repo create`
+   - Manage issues and PRs through CLI
+   - Use CLI for repository settings and configuration
+   - Prefer CLI over manual GitHub web interface operations
+
+2. **Version Control**
+   - Keep commits atomic and focused
+   - Write clear commit messages
+   - Use feature branches for new development
+   - Maintain clean git history
+
 ## Code Modification Rules
 
 1. **Before Making Changes**
