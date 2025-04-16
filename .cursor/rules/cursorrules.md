@@ -32,6 +32,17 @@
    - Use feature branches for new development
    - Maintain clean git history
 
+3. **Branch Structure**
+   - `main` - Production-ready code, always stable
+   - `develop` - Integration branch for features, main development branch
+   - `feature/*` - New features and enhancements (e.g., `feature/job-search`)
+   - `bugfix/*` - Bug fixes (e.g., `bugfix/resume-parser`)
+   - `hotfix/*` - Urgent production fixes
+   - `release/*` - Release preparation branches
+   - Branch naming: `type/issue-number-short-description`
+   - Delete branches after merging
+   - Keep branches up to date with develop
+
 ## Code Modification Rules
 
 1. **Before Making Changes**
