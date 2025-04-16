@@ -39,8 +39,9 @@
    - `bugfix/*` - Bug fixes (e.g., `bugfix/resume-parser`)
    - `hotfix/*` - Urgent production fixes
    - `release/*` - Release preparation branches
+   - `release/current` - Special branch for tracking current release in progress
    - Branch naming: `type/issue-number-short-description`
-   - Delete branches after merging
+   - Delete branches after merging (except `release/current`)
    - Keep branches up to date with develop
 
 4. **Branch Workflow Rules**
@@ -71,36 +72,45 @@
        - X: Major version (breaking changes)
        - Y: Minor version (new features)
        - Z: Patch version (bug fixes)
+     - `release/current` branch:
+       - Special branch that always points to the current release in progress
+       - Created from `develop` when starting a new release cycle
+       - Updated with bug fixes and release preparation changes
+       - Merged to both `main` and `develop` when release is complete
+       - Never deleted, always maintained for the current release
      - Release branch creation:
        ```bash
        # From develop branch
        git checkout develop
        git pull origin develop
        
-       # Create release branch
-       git checkout -b release/v1.0.0
+       # Create or update release/current branch
+       git checkout -b release/current
+       # If branch exists: git checkout release/current
        
        # Update version numbers and changelog
        # Commit changes with message: "chore(release): prepare v1.0.0"
        
        # Push release branch
-       git push -u origin release/v1.0.0
+       git push -u origin release/current
        ```
      - Release process:
-       1. Create release branch from `develop`
+       1. Create or update `release/current` branch from `develop`
        2. Update version numbers in code
        3. Update CHANGELOG.md
        4. Commit changes with release preparation message
        5. For solo development: 
-          - Merge to `main`: `git checkout main && git merge release/v1.0.0`
+          - Merge to `main`: `git checkout main && git merge release/current`
           - Tag release: `git tag -a v1.0.0 -m "Release v1.0.0"`
           - Push changes: `git push origin main --tags`
           - Merge to `develop`: `git checkout develop && git merge main`
+          - Update `release/current` for next release: `git checkout release/current && git merge develop`
        6. For team development:
           - Create PRs to merge into both `main` and `develop`
           - After approval, merge to both branches
           - Tag the release in `main`
-       7. Delete release branch after merging
+          - Update `release/current` for next release
+       7. Keep `release/current` branch for ongoing release work
 
 5. **Commit Message Rules**
    - Format: `type(scope): description`
