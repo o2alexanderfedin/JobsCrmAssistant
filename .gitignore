@@ -30,6 +30,7 @@ ENV/
 .vscode/
 *.swp
 *.swo
+.cursor/
 
 # Environment variables
 .env
