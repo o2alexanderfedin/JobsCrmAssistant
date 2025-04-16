@@ -43,6 +43,52 @@
    - Delete branches after merging
    - Keep branches up to date with develop
 
+4. **Branch Workflow Rules**
+   - **Feature Development**:
+     - Create feature branch from `develop`: `git checkout -b feature/123-feature-name develop`
+     - Develop and test feature
+     - Keep feature branch updated with develop: `git rebase develop`
+     - Create PR to merge into `develop`
+     - After review and approval, merge to `develop`
+     - Delete feature branch
+
+   - **Bug Fixes**:
+     - Create bugfix branch from `develop`: `git checkout -b bugfix/456-bug-description develop`
+     - Fix and test the bug
+     - Create PR to merge into `develop`
+     - After review and approval, merge to `develop`
+     - Delete bugfix branch
+
+   - **Hotfixes**:
+     - Create hotfix branch from `main`: `git checkout -b hotfix/789-hotfix-description main`
+     - Fix and test the issue
+     - Create PR to merge into both `main` and `develop`
+     - After review and approval, merge to both branches
+     - Delete hotfix branch
+
+   - **Releases**:
+     - Create release branch from `develop`: `git checkout -b release/1.0.0 develop`
+     - Perform release testing and fixes
+     - Version bump and changelog updates
+     - Create PR to merge into both `main` and `develop`
+     - After review and approval, merge to both branches
+     - Tag the release in `main`
+     - Delete release branch
+
+5. **Commit Message Rules**
+   - Format: `type(scope): description`
+   - Types:
+     - `feat`: New feature
+     - `fix`: Bug fix
+     - `docs`: Documentation changes
+     - `style`: Code style changes (formatting, etc.)
+     - `refactor`: Code refactoring
+     - `test`: Adding or modifying tests
+     - `chore`: Maintenance tasks
+   - Scope: Component or module affected
+   - Description: Clear, concise explanation
+   - Example: `feat(job-search): add LinkedIn job board integration`
+
 ## Code Modification Rules
 
 1. **Before Making Changes**
