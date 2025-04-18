@@ -1,0 +1,40 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+name: "Coding Style Guidelines"
+description: "Code formatting and style preferences for maintaining consistent codebase"
+globs: ["**/*.py"]
+
+# Coding Style Guidelines
+
+## Code Quality Standards
+- Follow PEP 8 guidelines
+- Fix all linter warnings
+- Maintain consistent style across the codebase
+- Use type hints for all function parameters and return values
+- Keep functions focused and single-purpose
+- Use meaningful variable and function names
+- Add docstrings to all public functions and classes
+
+## Code Organization
+- Keep imports organized and grouped
+- Use absolute imports
+- Group related functionality in modules
+- Keep files focused on a single responsibility
+- Use appropriate abstraction levels
+
+## Documentation
+- Update docstrings for all code changes
+- Add inline comments for complex logic
+- Keep comments current and relevant
+- Document any non-obvious decisions
+- Include examples in docstrings where helpful
+
+## Logging
+- Add appropriate log levels
+- Include relevant context in log messages
+- Use consistent log message format
+- Log important state changes
+- Include error details in exception logs 

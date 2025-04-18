@@ -1,0 +1,29 @@
+name: "Global Development Rules"
+description: "Core development principles and general guidelines applicable across the entire project"
+globs: ["**/*"]
+alwaysApply: true
+
+# Global Development Rules
+
+## General Development Process
+
+1. **Understand First, Code Later**
+   - Always analyze the existing code and logs thoroughly before making changes
+   - Document your understanding of the issue before proposing solutions
+   - Ask clarifying questions when needed
+
+2. **Incremental Changes**
+   - Make small, focused changes
+   - Test each change before moving to the next
+   - Document the impact of each change
+
+3. **Communication Guidelines**
+   - Regular progress reports
+   - Clear blockers identification
+   - Document decisions made
+   - Detailed explanations in code reviews
+   - Reference relevant documentation
+   - Address all feedback
+   - Update issue status
+   - Link related changes
+   - Document workarounds 

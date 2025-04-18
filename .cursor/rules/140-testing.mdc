@@ -1,0 +1,35 @@
+name: "Testing Guidelines"
+description: "Testing strategies and conventions for ensuring code quality and reliability"
+globs: ["tests/**/*", "src/**/*_test.py", "src/**/*_tests.py"]
+
+# Testing Guidelines
+
+## Testing Protocol
+- Run affected tests after each change
+- Add new test cases for edge cases
+- Ensure all tests pass before committing
+- Maintain test coverage
+- Add tests for new features
+- Update existing tests as needed
+
+## Test Organization
+- Tests mirror source code structure
+- Use descriptive test names
+- Group related tests in classes
+- Use appropriate test fixtures
+- Keep tests focused and atomic
+
+## Test Types
+- Unit tests for individual components
+- Integration tests for component interaction
+- API tests for endpoints
+- Performance tests for critical paths
+- Security tests for vulnerabilities
+
+## Test Quality
+- Write clear test descriptions
+- Use meaningful assertions
+- Mock external dependencies
+- Handle edge cases
+- Test error conditions
+- Maintain test data separately 

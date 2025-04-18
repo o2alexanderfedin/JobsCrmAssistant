@@ -1,0 +1,37 @@
+name: "Performance Guidelines"
+description: "Performance optimization guidelines and best practices"
+globs: ["src/**/*.py"]
+
+# Performance Guidelines
+
+## Code Efficiency
+- Consider algorithm complexity
+- Avoid unnecessary operations
+- Use appropriate data structures
+- Optimize critical paths
+- Profile when needed
+- Cache expensive operations
+
+## Resource Management
+- Monitor memory usage
+- Clean up resources properly
+- Use connection pooling
+- Implement timeouts
+- Handle rate limits
+- Optimize database queries
+
+## Monitoring
+- Track performance metrics
+- Monitor resource usage
+- Set up alerts
+- Log performance data
+- Track response times
+- Monitor error rates
+
+## Optimization Process
+- Profile before optimizing
+- Measure baseline performance
+- Identify bottlenecks
+- Implement improvements
+- Verify improvements
+- Document optimizations 

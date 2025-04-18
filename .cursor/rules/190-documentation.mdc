@@ -1,0 +1,37 @@
+name: "Documentation Guidelines"
+description: "Documentation standards and requirements for maintaining clear project documentation"
+globs: ["**/*.md", "src/**/*.py", "docs/**/*"]
+
+# Documentation Guidelines
+
+## Code Documentation
+- Update docstrings for all code changes
+- Add inline comments for complex logic
+- Keep comments current and relevant
+- Document any non-obvious decisions
+- Include examples in docstrings
+- Use type hints
+
+## API Documentation
+- Use OpenAPI/Swagger
+- Document all endpoints
+- Include request/response examples
+- Document error responses
+- Keep API docs up to date
+- Include usage examples
+
+## Project Documentation
+- Maintain README.md
+- Keep CHANGELOG.md updated
+- Document setup process
+- Include contribution guidelines
+- Document deployment process
+- Keep architecture docs current
+
+## Documentation Process
+- Document as you code
+- Review documentation changes
+- Keep docs in sync with code
+- Use consistent formatting
+- Include diagrams when helpful
+- Regular documentation reviews 

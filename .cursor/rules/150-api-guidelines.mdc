@@ -1,0 +1,37 @@
+name: "API Design Guidelines"
+description: "Standards for API design and implementation using FastAPI"
+globs: ["src/jobs_crm_assistant/api/**/*"]
+
+# API Design Guidelines
+
+## API Structure
+- Use FastAPI for API development
+- Follow RESTful principles
+- Use appropriate HTTP methods
+- Implement proper error handling
+- Document all endpoints
+- Version APIs appropriately
+
+## Endpoint Design
+- Use clear, descriptive URLs
+- Implement proper request validation
+- Use appropriate response codes
+- Include error details in responses
+- Document request/response schemas
+- Handle edge cases gracefully
+
+## Security
+- Implement authentication
+- Use proper authorization
+- Validate all inputs
+- Sanitize outputs
+- Rate limit endpoints
+- Log security events
+
+## Documentation
+- Use OpenAPI/Swagger
+- Document all parameters
+- Include example requests/responses
+- Document error responses
+- Keep documentation up to date
+- Include usage examples 

@@ -1,0 +1,28 @@
+name: "Dependency Management"
+description: "Rules regarding library and framework usage, version control, and package management"
+globs: ["requirements*.txt", "pyproject.toml"]
+
+# Dependency Management
+
+## Package Management
+- Use `pyproject.toml` for project metadata and dependencies
+- Maintain separate requirements files:
+  - `requirements.txt` for production dependencies
+  - `requirements-dev.txt` for development dependencies
+- Pin dependency versions for reproducibility
+- Document dependency purposes in comments
+
+## Framework Usage
+- FastAPI for API development
+- Pydantic for data validation
+- Loguru for logging
+- OpenAI for AI capabilities
+- LangChain for LLM integration
+- pytest for testing
+
+## Version Control
+- Keep dependencies up to date
+- Test with latest compatible versions
+- Document version constraints
+- Review security advisories
+- Update dependencies regularly 

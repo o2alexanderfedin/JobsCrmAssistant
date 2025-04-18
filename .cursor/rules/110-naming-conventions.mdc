@@ -1,0 +1,40 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+name: "Naming Conventions"
+description: "Standards for naming variables, functions, files, and branches"
+globs: ["**/*.py", "**/*.md"]
+
+# Naming Conventions
+
+## Branch Naming
+- Format: `type/issue-number-short-description`
+- Types:
+  - `feature/*` - New features and enhancements
+  - `bugfix/*` - Bug fixes
+  - `hotfix/*` - Urgent production fixes
+  - `release/*` - Release preparation branches
+  - `release/current` - Current release branch
+
+## Commit Messages
+- Format: `type(scope): description`
+- Types:
+  - `feat`: New feature
+  - `fix`: Bug fix
+  - `docs`: Documentation changes
+  - `style`: Code style changes
+  - `refactor`: Code refactoring
+  - `test`: Adding or modifying tests
+  - `chore`: Maintenance tasks
+- Scope: Component or module affected
+- Description: Clear, concise explanation
+- Example: `feat(job-search): add LinkedIn job board integration`
+
+## Version Numbers
+- Format: `vX.Y.Z`
+  - X: Major version (breaking changes)
+  - Y: Minor version (new features)
+  - Z: Patch version (bug fixes)
+- Example: v1.0.0 

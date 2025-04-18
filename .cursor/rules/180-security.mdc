@@ -1,0 +1,37 @@
+name: "Security Guidelines"
+description: "Security best practices and protocols for protecting the application"
+globs: ["src/**/*.py", "config/**/*", ".env*"]
+
+# Security Guidelines
+
+## Authentication & Authorization
+- Implement proper authentication
+- Use secure password handling
+- Implement role-based access
+- Validate user permissions
+- Use secure session management
+- Implement 2FA where needed
+
+## Data Security
+- Encrypt sensitive data
+- Secure API keys
+- Use environment variables
+- Implement data validation
+- Sanitize user inputs
+- Handle sensitive data properly
+
+## API Security
+- Use HTTPS
+- Implement rate limiting
+- Validate all inputs
+- Sanitize outputs
+- Use secure headers
+- Implement CORS properly
+
+## Security Monitoring
+- Log security events
+- Monitor access patterns
+- Track failed attempts
+- Set up security alerts
+- Regular security audits
+- Keep dependencies updated 

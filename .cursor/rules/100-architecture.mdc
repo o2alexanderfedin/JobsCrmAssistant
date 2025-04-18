@@ -1,0 +1,40 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+name: "Architecture Guidelines"
+description: "Project structure and architectural patterns for maintaining clean and organized codebase"
+globs: ["src/**/*", "tests/**/*"]
+
+# Architecture Guidelines
+
+## Project Structure
+
+1. **Source Code Organization**
+   - All source code must be under `src/jobs_crm_assistant/`
+   - Tests must be under `tests/` directory
+   - Configuration files at root level
+   - Clear separation of concerns in module organization
+
+2. **Module Organization**
+   - `api/` - FastAPI routes and endpoints
+   - `core/` - Core business logic and configuration
+   - `models/` - Data models and schemas
+   - `services/` - Business services
+   - `agents/` - AI agent implementations
+   - `utils/` - Utility functions
+
+3. **Code Modification Rules**
+   - Review relevant code sections before changes
+   - Understand current implementation
+   - Identify potential side effects
+   - Document planned changes
+   - Follow existing code style
+   - Add appropriate logging
+   - Update documentation
+   - Keep changes minimal and focused
+   - Run tests after changes
+   - Review logs
+   - Fix any linter errors
+   - Document remaining issues 

@@ -1,0 +1,39 @@
+name: "Error Handling Guidelines"
+description: "Practices for managing errors, exceptions, and debugging processes"
+globs: ["src/**/*.py"]
+
+# Error Handling Guidelines
+
+## Debugging Process
+1. **Initial Investigation**
+   - Review error messages and logs
+   - Identify the specific failure point
+   - Document the current behavior
+
+2. **Debug Strategy**
+   - Add detailed logging
+   - Test assumptions
+   - Isolate the problem
+   - Create minimal reproduction case
+
+3. **Solution Implementation**
+   - Propose solution with explanation
+   - Implement changes incrementally
+   - Verify fix with tests
+   - Document the resolution
+
+## Exception Handling
+- Use specific exception types
+- Include meaningful error messages
+- Log exceptions with context
+- Handle exceptions at appropriate levels
+- Clean up resources in finally blocks
+- Document expected exceptions
+
+## Error Reporting
+- Include stack traces in logs
+- Add relevant context
+- Use appropriate log levels
+- Structure error messages
+- Include error codes
+- Document error scenarios 

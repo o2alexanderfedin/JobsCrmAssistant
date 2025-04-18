@@ -1,0 +1,44 @@
+name: "DevOps Guidelines"
+description: "CI/CD processes and deployment guidelines for maintaining reliable operations"
+globs: [".github/**/*", "Dockerfile", "docker-compose*.yml"]
+
+# DevOps Guidelines
+
+## Version Control
+1. **GitHub CLI Usage**
+   - Use GitHub CLI (`gh`) for repository operations
+   - Create repositories using `gh repo create`
+   - Manage issues and PRs through CLI
+   - Use CLI for repository settings
+   - Prefer CLI over web interface
+
+2. **Branch Management**
+   - Keep commits atomic and focused
+   - Write clear commit messages
+   - Use feature branches
+   - Maintain clean git history
+   - Keep branches up to date
+
+3. **Release Process**
+   - Version format: `vX.Y.Z`
+   - Update version numbers
+   - Update CHANGELOG.md
+   - Tag releases
+   - Deploy to staging
+   - Deploy to production
+
+## CI/CD Pipeline
+- Run tests automatically
+- Check code quality
+- Build documentation
+- Deploy to environments
+- Monitor deployments
+- Rollback procedures
+
+## Deployment
+- Use containerization
+- Implement blue-green deployment
+- Monitor deployments
+- Set up alerts
+- Document procedures
+- Maintain deployment logs 
