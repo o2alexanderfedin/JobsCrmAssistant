@@ -1,11 +1,8 @@
 ---
-description: 
-globs: 
-alwaysApply: false
----
 description: Defines PR review behavior and standards for the AI assistant
 globs: ["**"]
 alwaysApply: true
+---
 
 # Pull Request Review Guidelines
 
