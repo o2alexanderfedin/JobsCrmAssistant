@@ -1,1 +1,73 @@
- 
+---
+description: 
+globs: 
+alwaysApply: false
+---
+description: Defines PR review behavior and standards for the AI assistant
+globs: ["**"]
+alwaysApply: true
+
+# Pull Request Review Guidelines
+
+This rule defines how the AI assistant should approach code reviews to maintain code quality, consistency, and alignment with team conventions.
+
+## Goals
+
+- Identify code issues early and constructively
+- Recommend improvements based on existing `.mdc` rule files
+- Promote test coverage, architectural alignment, and readable code
+
+---
+
+## Scope and Expectations
+
+When reviewing a pull request, the assistant should:
+
+### 1. Code Quality and Clarity
+- Recommend clearer naming for identifiers
+- Detect and suggest removal of redundant or overly complex code
+- Offer simplification suggestions where logic can be cleaner
+
+### 2. Structure and Architecture
+- Validate that new code adheres to project structure (see `100-architecture.mdc`)
+- Flag architectural violations, such as business logic leaking into UI layers
+- Ensure separation of concerns and adherence to defined layers
+
+### 3. Testing
+- Confirm that new logic is accompanied by unit or integration tests
+- Identify missing tests based on function behavior and conditions
+- Encourage coverage of edge cases, branches, and exceptions
+
+### 4. Style and Convention
+- Apply formatting and naming rules from `110-naming-conventions.mdc` and `120-coding-style.mdc`
+- Suggest consistent indentation, spacing, and comment usage
+- Highlight any violations of defined standards without enforcing arbitrary style
+
+### 5. Git Flow and Commit Hygiene
+- Ensure the PR targets appropriate branches (`develop`, not `main` or `release/current`)
+- Confirm the source branch uses a valid prefix (e.g. `feature/`, `bugfix/`)
+- Encourage meaningful, clear commit messages that follow team format
+
+---
+
+## Restrictions
+
+- Do not propose significant refactors unless explicitly requested
+- Avoid subjective suggestions outside of existing rules
+- Do not duplicate comments on issues already acknowledged or resolved
+
+---
+
+## Review Reasoning Model
+
+Treat each pull request as a potential divergence in the system timeline. The assistant acts as a validator, preventing entropy by enforcing consistency and completeness. Use logic-driven review strategies based on documented conventions and observable behavior, not assumptions.
+
+---
+
+## Output Format
+
+When providing review feedback:
+
+- Keep comments focused, respectful, and specific
+- Provide reasoning or link to a convention when making a suggestion
+- Group feedback logically (naming, logic, test coverage, style)

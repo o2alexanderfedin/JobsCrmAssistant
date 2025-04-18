@@ -1,0 +1,92 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+description: Defines git branching strategy and workflow rules
+globs: ["**"]
+alwaysApply: true
+
+# Git Branch Policy
+
+This rule defines the branching strategy, workflow, and commit message standards for the project.
+
+## Branch Structure
+
+### Main Branches
+- `main`: Production-ready code
+- `develop`: Integration branch for features
+- `release/*`: Release preparation branches
+
+### Feature Branches
+- `feature/*`: New features and enhancements
+- `bugfix/*`: Bug fixes and patches
+- `hotfix/*`: Urgent production fixes
+- `refactor/*`: Code refactoring
+
+## Branch Naming Convention
+
+Format: `<type>/<issue-number>-<short-description>`
+
+Examples:
+- `feature/123-add-user-authentication`
+- `bugfix/456-fix-login-validation`
+- `hotfix/789-security-patch`
+
+## Workflow Rules
+
+### 1. Branch Creation
+- Create feature branches from `develop`
+- Create hotfix branches from `main`
+- Include issue number in branch name
+- Use descriptive but concise names
+
+### 2. Merging Strategy
+- Feature branches → `develop`
+- Hotfix branches → `main` and `develop`
+- Release branches → `main` and `develop`
+- No direct commits to `main` or `develop`
+
+### 3. Branch Protection
+- `main`: Requires PR review and CI passing
+- `develop`: Requires PR review
+- No force pushes to protected branches
+
+## Commit Message Format
+
+Format: `<type>(<scope>): <description>`
+
+Types:
+- `feat`: New feature
+- `fix`: Bug fix
+- `docs`: Documentation
+- `style`: Formatting
+- `refactor`: Code refactoring
+- `test`: Test changes
+- `chore`: Maintenance
+
+Examples:
+- `feat(auth): add OAuth2 authentication`
+- `fix(api): resolve rate limiting issue`
+- `docs(readme): update deployment instructions`
+
+## PR Requirements
+
+1. Title follows commit message format
+2. Description includes:
+   - Issue reference
+   - Changes made
+   - Testing performed
+   - Breaking changes (if any)
+3. All CI checks must pass
+4. Required reviewers must approve
+5. No merge conflicts
+
+## Version Control Best Practices
+
+1. Keep branches up to date with base branch
+2. Rebase feature branches before merging
+3. Delete branches after merging
+4. Use meaningful commit messages
+5. Keep PRs focused and small
+6. Regular commits with clear purposes
