@@ -6,6 +6,7 @@ alwaysApply: false
 name: "Coding Style Guidelines"
 description: "Code formatting and style preferences for maintaining consistent codebase"
 globs: ["**/*.py"]
+alwaysApply: true
 
 # Coding Style Guidelines
 

@@ -1,3 +1,8 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
 name: "Dependency Management"
 description: "Rules regarding library and framework usage, version control, and package management"
 globs: ["requirements*.txt", "pyproject.toml"]

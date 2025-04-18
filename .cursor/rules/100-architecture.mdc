@@ -1,11 +1,7 @@
----
-description: 
-globs: 
-alwaysApply: false
----
 name: "Architecture Guidelines"
 description: "Project structure and architectural patterns for maintaining clean and organized codebase"
-globs: ["src/**/*", "tests/**/*"]
+globs: ["src/**/*", "app/**/*", "tests/**/*", "config/**/*"]
+autoAttach: true
 
 # Architecture Guidelines
 

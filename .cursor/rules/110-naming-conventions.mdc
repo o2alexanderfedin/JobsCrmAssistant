@@ -1,11 +1,7 @@
----
-description: 
-globs: 
-alwaysApply: false
----
 name: "Naming Conventions"
 description: "Standards for naming variables, functions, files, and branches"
 globs: ["**/*.py", "**/*.md"]
+alwaysApply: true
 
 # Naming Conventions
 

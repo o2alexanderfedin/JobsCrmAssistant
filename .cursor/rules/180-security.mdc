@@ -1,6 +1,12 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
 name: "Security Guidelines"
 description: "Security best practices and protocols for protecting the application"
 globs: ["src/**/*.py", "config/**/*", ".env*"]
+agentRequested: true
 
 # Security Guidelines
 

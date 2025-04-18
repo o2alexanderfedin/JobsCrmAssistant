@@ -1,6 +1,12 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
 name: "API Design Guidelines"
 description: "Standards for API design and implementation using FastAPI"
-globs: ["src/jobs_crm_assistant/api/**/*"]
+globs: ["src/**/api/**/*", "src/**/routes/**/*"]
+autoAttach: true
 
 # API Design Guidelines
 
