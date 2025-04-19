@@ -1,1 +1,135 @@
- 
+name: "GitHub CLI Usage Guidelines"
+description: "Standards and examples for using GitHub CLI commands with proper formatting"
+globs: ["**/*"]
+autoAttach: true
+
+# GitHub CLI Usage Guidelines
+
+This rule defines the correct way to use GitHub CLI commands, especially when dealing with multi-line text input.
+
+## General Principles
+
+1. Always use process substitution with `echo -e` (`--body <(echo -e ...)`)
+2. Never use direct quoted strings for multi-line content
+3. Use proper markdown formatting in the content
+4. Escape special characters when needed
+
+## Issue Management
+
+### Creating Issues
+
+```bash
+# Create a new issue
+gh issue create --title "feat: New Feature" --body <(echo -e "# Feature Title\n\n## Description\nFeature description\n\n## Requirements\n- Requirement 1\n- Requirement 2")
+
+# Create issue with labels
+gh issue create --title "feat: New Feature" --body <(echo -e "# Feature Title\n\n## Description\nDescription") --label enhancement --label "high priority"
+```
+
+### Commenting on Issues
+
+```bash
+# Add a simple comment
+gh issue comment 123 --body <(echo -e "Simple comment")
+
+# Add a structured comment
+gh issue comment 123 --body <(echo -e "# Update\n\n## Progress\n- Completed X\n- Working on Y")
+
+# Add a status update
+gh issue comment 123 --body <(echo -e "## Status Update\n\n### Completed\n- [x] Task 1\n- [x] Task 2\n\n### Pending\n- [ ] Task 3")
+```
+
+### Closing Issues
+
+```bash
+# Close with simple comment
+gh issue close 123 --comment <(echo -e "Closing: work completed")
+
+# Close with detailed comment
+gh issue close 123 --comment <(echo -e "# Closing Summary\n\n## Completed Work\n- Feature implemented\n- Tests added\n\n## Follow-up Tasks\n1. Monitor performance\n2. Update documentation") --reason completed
+```
+
+## Pull Request Management
+
+### Creating PRs
+
+```bash
+# Create a simple PR
+gh pr create --title "feat: New Feature" --body <(echo -e "# Changes\n\n- Added X\n- Modified Y")
+
+# Create a detailed PR
+gh pr create --title "feat: New Feature" --body <(echo -e "# Feature Implementation\n\n## Changes\n- Added X\n- Modified Y\n\n## Testing\n- Unit tests added\n- Integration tests updated\n\n## Notes\n- Performance impact considered\n- Security review needed")
+```
+
+### PR Reviews
+
+```bash
+# Add review comment
+gh pr review 123 --comment --body <(echo -e "# Review Notes\n\n## Suggestions\n1. Consider X\n2. Improve Y")
+
+# Approve with comments
+gh pr review 123 --approve --body <(echo -e "# Approval Notes\n\n- Code looks good\n- Tests are comprehensive\n- Documentation is clear")
+```
+
+## Common Patterns
+
+### Status Updates
+
+```bash
+# Progress update
+gh issue comment 123 --body <(echo -e "## Progress Update\n\n### Completed\n- [x] Task 1\n- [x] Task 2\n\n### In Progress\n- [ ] Task 3\n\n### Blocked\n- [ ] Task 4 (waiting for X)")
+```
+
+### Error Reports
+
+```bash
+# Bug report
+gh issue create --title "bug: Error Description" --body <(echo -e "# Bug Report\n\n## Description\nError occurs when...\n\n## Steps to Reproduce\n1. Step 1\n2. Step 2\n\n## Expected Behavior\nShould...\n\n## Actual Behavior\nInstead...")
+```
+
+### Implementation Notes
+
+```bash
+# Adding implementation details
+gh issue comment 123 --body <(echo -e "# Implementation Details\n\n## Approach\n1. First, we will...\n2. Then...\n\n## Technical Considerations\n- Consider X\n- Need to handle Y\n\n## Dependencies\n- Requires Z version 1.2.3")
+```
+
+## Error Handling
+
+### Common Issues and Solutions
+
+1. Newlines not appearing:
+   ```bash
+   # Wrong ❌
+   gh issue comment 123 --body "Line 1\nLine 2"
+
+   # Correct ✅
+   gh issue comment 123 --body <(echo -e "Line 1\nLine 2")
+   ```
+
+2. Special characters:
+   ```bash
+   # Wrong ❌
+   gh issue comment 123 --body "Status: $variable"
+
+   # Correct ✅
+   gh issue comment 123 --body <(echo -e "Status: \$variable")
+   ```
+
+3. Markdown formatting:
+   ```bash
+   # Wrong ❌
+   gh issue comment 123 --body "**Bold** and `code` on same line"
+
+   # Correct ✅
+   gh issue comment 123 --body <(echo -e "**Bold** and \`code\` on same line")
+   ```
+
+## Best Practices
+
+1. Always use `--body <(echo -e ...)` pattern for multi-line content
+2. Always use `--comment <(echo -e ...)` pattern for issue/PR comments
+3. Properly structure markdown with headers and sections
+4. Escape special characters when needed
+5. Use consistent formatting across all commands
+6. Include appropriate level of detail for the context 
