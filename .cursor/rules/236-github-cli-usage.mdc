@@ -1,7 +1,12 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
 name: "GitHub CLI Usage Guidelines"
 description: "Standards and examples for using GitHub CLI commands with proper formatting"
 globs: ["**/*"]
-autoAttach: true
+alwaysApply: true
 
 # GitHub CLI Usage Guidelines
 

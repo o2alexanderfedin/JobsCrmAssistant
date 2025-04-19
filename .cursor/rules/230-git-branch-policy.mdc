@@ -1,3 +1,8 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
 description: Defines git branching strategy and workflow rules
 globs: ["**"]
 alwaysApply: true

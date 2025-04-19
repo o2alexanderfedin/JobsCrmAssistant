@@ -1,0 +1,92 @@
+---
+description: "Standards and guidelines for creating and maintaining rule files"
+globs: [".cursor/rules/*.mdc"]
+alwaysApply: true
+---
+ 
+# Rule File Standards
+
+This document defines the standards and guidelines for creating and maintaining rule files in the Jobs CRM Assistant project.
+
+## 1. File Structure
+
+### 1.1 Required Components
+- YAML frontmatter with description, globs, and alwaysApply fields
+- Single H1 title matching the rule name
+- Overview paragraph explaining purpose
+- Logical sections using H2 and H3 headings
+- Clear, actionable guidelines
+
+### 1.2 Frontmatter Format
+```yaml
+---
+description: "Clear description of the rule's purpose"
+globs: ["file patterns this rule applies to"]
+alwaysApply: true/false
+---
+```
+
+## 2. Content Guidelines
+
+### 2.1 Writing Style
+- Use clear, concise language
+- Focus on standards and requirements
+- Write in active voice
+- Use bullet points for lists
+- Use numbered lists for sequences
+
+### 2.2 What to Include
+- Standards and requirements
+- Best practices
+- Decision criteria
+- Rationale for important rules
+- Cross-references to related rules
+
+### 2.3 Code Usage
+- **Absolute Minimum**: Include code only when text alone cannot convey the requirement
+- Keep code examples under 5% of total content
+- Code should illustrate patterns, not implementation
+- Always explain why the code example is necessary
+- Use pseudo-code when possible instead of actual implementation
+
+### 2.4 What to Avoid
+- Implementation details and extensive code samples
+- Environment-specific information
+- Temporary solutions
+- Personal preferences
+- Redundant information
+- Code that could be explained in plain text
+
+## 3. File Organization
+
+### 3.1 Naming Convention
+- Three-digit prefix (NNN)
+- Descriptive name in kebab-case
+- `.mdc` extension
+Example: `195-rule-file-standards.mdc`
+
+### 3.2 Category Ranges
+- 000-099: Core/Global rules
+- 100-199: Development standards
+- 200-299: Process guidelines
+- 300-399: Technical standards
+- 400-499: Team guidelines
+
+## 4. Maintenance
+
+### 4.1 Review Process
+- Quarterly reviews required
+- Update outdated content
+- Remove obsolete guidelines
+- Add missing standards
+- Validate against current practices
+
+### 4.2 Version Control
+- Track changes in git
+- Clear commit messages
+- PR reviews required
+- Update CHANGELOG.md
+
+## 5. Related Rules
+- [000-global-rules.mdc](000-global-rules.mdc): Core development principles
+- [190-documentation.mdc](190-documentation.mdc): Documentation standards 

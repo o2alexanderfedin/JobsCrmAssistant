@@ -1,0 +1,169 @@
+---
+description: "Standards for managing application configuration, environment variables, secrets, and feature flags"
+globs: ["**/*.py", "**/*.env*", "**/config/*", "**/settings/*"]
+alwaysApply: true
+---
+# Configuration Management
+
+This document defines the standards and guidelines for managing application configuration, including environment variables, secrets, feature flags, and application settings.
+
+## 1. Environment Variables
+
+### 1.1 Naming Conventions
+- Use UPPERCASE with underscores
+- Prefix with application name: `JOBSCRM_`
+- Group related variables with additional prefix
+- Be descriptive and clear
+Examples:
+- `JOBSCRM_DB_HOST`
+- `JOBSCRM_REDIS_URL`
+- `JOBSCRM_API_TIMEOUT_SECONDS`
+
+### 1.2 Documentation Requirements
+- Document all variables in `.env.example`
+- Include description for each variable
+- Specify required vs optional
+- Note default values
+- Document valid value ranges
+
+### 1.3 Environment Separation
+- Development: `.env.development`
+- Testing: `.env.test`
+- Staging: `.env.staging`
+- Production: `.env.production`
+- Never commit actual `.env` files
+- Include all files in `.gitignore`
+
+## 2. Secret Management
+
+### 2.1 Security Standards
+- Never commit secrets to version control
+- Use secret management service in production
+- Rotate secrets regularly
+- Use strong, unique values
+- Monitor secret access
+
+### 2.2 Local Development
+- Use `.env.local` for local secrets
+- Never share personal credentials
+- Reset development secrets regularly
+- Use dummy values for development
+
+### 2.3 Production Secrets
+- Use secret management service
+- Implement access controls
+- Enable audit logging
+- Automate rotation where possible
+- Monitor for exposures
+
+## 3. Feature Flags
+
+### 3.1 Flag Definition
+- Clear, descriptive names
+- Document purpose and impact
+- Specify owner and lifecycle
+- Define default values
+- Plan for removal
+
+### 3.2 Implementation Guidelines
+- Use consistent naming pattern
+- Implement graceful fallbacks
+- Cache flag values appropriately
+- Monitor flag usage
+- Clean up unused flags
+
+### 3.3 Flag Categories
+- Release toggles (temporary)
+- Ops toggles (permanent)
+- Experiment toggles (temporary)
+- Permission toggles (permanent)
+
+## 4. Application Settings
+
+### 4.1 Settings Hierarchy
+1. Environment Variables (highest priority)
+2. Configuration Files
+3. Database Settings
+4. Default Values (lowest priority)
+
+### 4.2 Configuration Files
+- Use YAML for human-readable configs
+- Use JSON for machine-readable configs
+- Version control all config files
+- Document all options
+- Include validation schemas
+
+### 4.3 Dynamic Settings
+- Store in database
+- Cache appropriately
+- Implement change auditing
+- Provide admin interface
+- Document update procedures
+
+## 5. Validation Requirements
+
+### 5.1 Startup Validation
+- Verify required variables present
+- Validate variable formats
+- Check secret availability
+- Validate config file syntax
+- Verify critical connections
+
+### 5.2 Runtime Validation
+- Validate dynamic setting changes
+- Verify feature flag states
+- Check configuration consistency
+- Monitor for missing values
+- Log validation failures
+
+## 6. Security Considerations
+
+### 6.1 Access Control
+- Restrict config access by role
+- Audit configuration changes
+- Encrypt sensitive values
+- Implement least privilege
+- Monitor access patterns
+
+### 6.2 Data Protection
+- Encrypt secrets at rest
+- Secure transmission channels
+- Mask sensitive values in logs
+- Implement access controls
+- Regular security reviews
+
+## 7. Deployment Considerations
+
+### 7.1 Configuration Updates
+- Use atomic updates
+- Implement rollback capability
+- Validate before deploy
+- Monitor post-deploy
+- Document update process
+
+### 7.2 Environment Management
+- Maintain environment parity
+- Document differences
+- Automate propagation
+- Verify configurations
+- Track changes
+
+## 8. Monitoring and Logging
+
+### 8.1 Required Monitoring
+- Configuration changes
+- Secret access attempts
+- Feature flag states
+- Setting modifications
+- Validation failures
+
+### 8.2 Logging Standards
+- Log all configuration changes
+- Record change author
+- Include timestamps
+- Mask sensitive data
+- Maintain audit trail
+
+## 9. Related Rules
+- [180-security.mdc](180-security.mdc): Security guidelines
+- [200-devops.mdc](200-devops.mdc): Deployment procedures 
