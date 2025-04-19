@@ -1,8 +1,7 @@
-description: Defines standards for creating and managing GitHub issues
-globs: ["**"]
-alwaysApply: true
-
----
+name: "GitHub Issue Standards"
+description: "Standards for creating and managing GitHub issues to ensure consistency and clarity"
+globs: ["**/*"]
+autoAttach: true
 
 # GitHub Issue Standards
 
@@ -138,31 +137,4 @@ Users are experiencing intermittent 401 errors during login attempts.
 - Performance implications
 - Security considerations
 - Backward compatibility
-```
-
-## Command Line Creation
-
-To create issues with proper formatting using GitHub CLI:
-
-```bash
-gh issue create --title "type: Description" --body "# Title
-
-## Description
-Description text
-
-## Requirements
-- Requirement 1
-- Requirement 2
-
-## Implementation Steps
-1. Step 1
-2. Step 2
-
-## Acceptance Criteria
-- [ ] Criterion 1
-- [ ] Criterion 2
-
-## Technical Considerations
-- Consideration 1
-- Consideration 2" --label "enhancement" --label "documentation"
 ``` 
