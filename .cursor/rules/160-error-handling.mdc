@@ -1,7 +1,7 @@
 name: "Error Handling Guidelines"
 description: "Practices for managing errors, exceptions, and debugging processes"
 globs: ["src/**/*.py"]
-agentRequested: true
+autoAttach: true
 
 ---
 
