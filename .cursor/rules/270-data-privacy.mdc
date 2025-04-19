@@ -1,0 +1,140 @@
+name: "Data Privacy Guidelines"
+description: "Standards for handling personal data, privacy compliance, data protection, and access control implementation"
+globs: ["**/*.py", "**/config/*", "**/*.env", "**/security/*", "**/auth/*", "**/models/*", "**/schemas/*"]
+autoAttach: true
+
+# Data Privacy Guidelines
+
+## 1. PII (Personally Identifiable Information) Handling
+
+### 1.1 Data Classification
+- All PII must be classified into one of these categories:
+  - BASIC: Names, emails, phone numbers
+  - SENSITIVE: SSN, passport numbers, financial data
+  - BIOMETRIC: Fingerprints, facial data
+  - HEALTH: Medical records and health information
+  - LOCATION: GPS coordinates, physical addresses
+  - BEHAVIORAL: Usage patterns, preferences
+
+### 1.2 Storage Requirements
+- BASIC: Standard encryption at rest
+- SENSITIVE: Strong encryption + access logging
+- BIOMETRIC: Strong encryption + MFA for access
+- HEALTH: HIPAA-compliant storage + audit trail
+- LOCATION: Encrypted + user consent required
+- BEHAVIORAL: Anonymization options required
+
+### 1.3 Retention Periods
+- BASIC: 2 years from last use
+- SENSITIVE: 7 years (legal requirement)
+- BIOMETRIC: Duration of account + 30 days
+- HEALTH: 7 years (HIPAA requirement)
+- LOCATION: 90 days maximum
+- BEHAVIORAL: 1 year maximum
+
+## 2. Data Protection Measures
+
+### 2.1 Encryption Standards
+- Use AES-256 for data at rest
+- Use TLS 1.3 for data in transit
+- Rotate encryption keys every 90 days
+- Store keys in secure key management service
+
+### 2.2 Access Control
+- Implement role-based access control (RBAC)
+- Enforce principle of least privilege
+- Require MFA for sensitive data access
+- Log all access to sensitive data
+- Regular access review every 90 days
+
+## 3. GDPR Compliance
+
+### 3.1 User Rights Implementation
+- Right to Access: Provide data within 30 days
+- Right to Rectification: Allow corrections
+- Right to Erasure: Complete deletion within 30 days
+- Right to Restrict: Implement processing flags
+- Right to Portability: Provide JSON/CSV export
+- Right to Object: Honor processing objections
+
+### 3.2 Consent Management
+- Explicit consent required for:
+  - Processing sensitive data
+  - Cross-border transfers
+  - Marketing communications
+  - Cookie usage (except essential)
+- Consent must be:
+  - Freely given
+  - Specific and informed
+  - Recorded with timestamp
+  - Easy to withdraw
+
+## 4. Audit Requirements
+
+### 4.1 Access Logging
+- Log all data access events:
+  - Timestamp
+  - User ID
+  - Action performed
+  - Data accessed
+  - Access context
+  - IP address
+
+### 4.2 Modification Tracking
+- Log all data modifications:
+  - Previous value
+  - New value
+  - Change reason
+  - Timestamp
+  - User responsible
+
+### 4.3 Retention of Audit Logs
+- Security logs: 1 year
+- Access logs: 2 years
+- Modification logs: 7 years
+- Consent logs: Duration of consent + 2 years
+
+## 5. Security Measures
+
+### 5.1 Data Protection
+- Regular security assessments
+- Penetration testing every 6 months
+- Vulnerability scanning weekly
+- Security patch management within 30 days
+
+### 5.2 Incident Response
+- Document all security incidents
+- 72-hour breach notification
+- Maintain incident response team
+- Regular incident response drills
+
+## 6. Implementation Requirements
+
+### 6.1 Code Standards
+- Use type hints for all data handling
+- Implement proper error handling
+- Add comprehensive logging
+- Write unit tests for all privacy functions
+- Document all privacy-related functions
+
+### 6.2 Review Requirements
+- Security review for privacy features
+- Regular code audits
+- Dependency security checks
+- Privacy impact assessments
+
+## 7. Documentation
+
+### 7.1 Required Documentation
+- Privacy policy
+- Data processing agreements
+- Consent records
+- Processing activities record
+- Security measures
+- Incident response procedures
+
+### 7.2 Documentation Updates
+- Review every 6 months
+- Update after major changes
+- Version control all documents
+- Maintain change log 

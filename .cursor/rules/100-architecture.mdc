@@ -1,7 +1,7 @@
 name: "Architecture Guidelines"
 description: "Project structure and architectural patterns for maintaining clean and organized codebase"
 globs: ["src/**/*", "app/**/*", "tests/**/*", "config/**/*"]
-alwaysApply: true
+autoAttach: true
 
 ---
 

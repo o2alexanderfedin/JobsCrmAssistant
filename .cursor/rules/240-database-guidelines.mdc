@@ -1,0 +1,259 @@
+description: Defines standards for database operations and management
+globs: ["**/models/**/*.py", "**/migrations/**/*.py", "**/database/**/*.py", "**/*db*.py"]
+alwaysApply: true
+
+---
+
+# Database Guidelines
+
+This rule defines standards for database operations, schema management, and data handling.
+
+## Schema Management
+
+### Naming Conventions
+- Tables: Plural form, snake_case (e.g., `user_profiles`, `job_applications`)
+- Columns: snake_case, descriptive (e.g., `first_name`, `last_login_at`)
+- Foreign Keys: `<referenced_table_singular>_id` (e.g., `user_id`, `company_id`)
+- Indexes: `idx_<table>_<column(s)>` (e.g., `idx_users_email`)
+- Constraints: `<type>_<table>_<column(s)>` (e.g., `uq_users_email`)
+
+### Data Types
+- Use appropriate data types for columns:
+  ```sql
+  -- Good
+  user_id: BIGINT
+  email: VARCHAR(255)
+  created_at: TIMESTAMP
+  is_active: BOOLEAN
+  
+  -- Avoid
+  user_id: VARCHAR(50)  -- Using string for numeric ID
+  email: TEXT  -- Unbounded length for email
+  created_at: VARCHAR(50)  -- String for timestamp
+  is_active: INTEGER  -- Integer for boolean
+  ```
+
+### Constraints
+- Primary Keys: Always define
+- Foreign Keys: Always define with appropriate ON DELETE/UPDATE actions
+- Unique Constraints: For business-unique fields
+- Not Null: Default to NOT NULL unless nullable is required
+- Check Constraints: For value validation
+
+Example:
+```sql
+CREATE TABLE job_applications (
+    id BIGSERIAL PRIMARY KEY,
+    user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    job_id BIGINT NOT NULL REFERENCES jobs(id) ON DELETE CASCADE,
+    status VARCHAR(50) NOT NULL CHECK (status IN ('pending', 'accepted', 'rejected')),
+    applied_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT uq_job_applications_user_job UNIQUE (user_id, job_id)
+);
+```
+
+## Migration Standards
+
+### Migration File Structure
+```python
+"""Migration description
+
+Revision ID: <revision_id>
+Revises: <previous_revision_id>
+Create Date: YYYY-MM-DD HH:MM:SS
+"""
+
+# Imports
+from alembic import op
+import sqlalchemy as sa
+
+# Revision identifiers
+revision = '<revision_id>'
+down_revision = '<previous_revision_id>'
+branch_labels = None
+depends_on = None
+
+def upgrade():
+    """Migration steps."""
+    # Implementation
+
+def downgrade():
+    """Rollback steps."""
+    # Implementation
+```
+
+### Migration Guidelines
+1. Always provide both upgrade and downgrade paths
+2. Make migrations atomic
+3. Avoid data migrations in schema migrations
+4. Use appropriate transaction boundaries
+5. Test both upgrade and downgrade paths
+
+Example:
+```python
+def upgrade():
+    op.create_table(
+        'job_applications',
+        sa.Column('id', sa.BigInteger(), nullable=False),
+        sa.Column('user_id', sa.BigInteger(), nullable=False),
+        sa.Column('job_id', sa.BigInteger(), nullable=False),
+        sa.Column('status', sa.String(50), nullable=False),
+        sa.Column('applied_at', sa.TIMESTAMP(), server_default=sa.text('CURRENT_TIMESTAMP')),
+        sa.Column('updated_at', sa.TIMESTAMP(), server_default=sa.text('CURRENT_TIMESTAMP')),
+        sa.PrimaryKeyConstraint('id'),
+        sa.ForeignKeyConstraint(['user_id'], ['users.id'], ondelete='CASCADE'),
+        sa.ForeignKeyConstraint(['job_id'], ['jobs.id'], ondelete='CASCADE'),
+        sa.UniqueConstraint('user_id', 'job_id', name='uq_job_applications_user_job')
+    )
+
+def downgrade():
+    op.drop_table('job_applications')
+```
+
+## Query Optimization
+
+### Index Strategy
+1. Index on frequently searched columns
+2. Index on foreign key columns
+3. Composite indexes for multi-column queries
+4. Consider partial indexes for filtered queries
+
+Example:
+```sql
+-- Index for email searches
+CREATE INDEX idx_users_email ON users (email);
+
+-- Composite index for status + date queries
+CREATE INDEX idx_job_applications_status_date ON job_applications (status, applied_at);
+
+-- Partial index for active jobs
+CREATE INDEX idx_jobs_active ON jobs (created_at) WHERE status = 'active';
+```
+
+### Query Guidelines
+1. Use specific column names instead of SELECT *
+2. Add LIMIT to large result sets
+3. Use EXISTS instead of IN for subqueries
+4. Consider EXPLAIN ANALYZE for query optimization
+
+Example:
+```python
+# Good
+db.query(User.id, User.email).filter(User.is_active).limit(100)
+
+# Avoid
+db.query(User).filter(User.id.in_(db.query(Application.user_id))).all()
+```
+
+## Connection Management
+
+### Connection Pool Configuration
+```python
+from sqlalchemy import create_engine
+from sqlalchemy.pool import QueuePool
+
+engine = create_engine('postgresql://user:pass@localhost/dbname',
+    poolclass=QueuePool,
+    pool_size=5,
+    max_overflow=10,
+    pool_timeout=30,
+    pool_recycle=1800
+)
+```
+
+### Connection Handling
+1. Use context managers for automatic cleanup
+2. Implement retry logic for transient failures
+3. Log connection issues appropriately
+
+Example:
+```python
+from contextlib import contextmanager
+from sqlalchemy.orm import sessionmaker
+
+Session = sessionmaker(bind=engine)
+
+@contextmanager
+def get_db_session():
+    session = Session()
+    try:
+        yield session
+        session.commit()
+    except Exception:
+        session.rollback()
+        raise
+    finally:
+        session.close()
+```
+
+## Backup and Recovery
+
+### Backup Strategy
+1. Regular full backups
+2. Point-in-time recovery capability
+3. Backup verification process
+4. Secure backup storage
+
+Example configuration:
+```bash
+# PostgreSQL backup script
+pg_dump -Fc -d dbname -f backup.dump
+
+# Verify backup
+pg_restore -l backup.dump
+
+# Restore (if needed)
+pg_restore -d dbname backup.dump
+```
+
+### Monitoring and Maintenance
+1. Regular VACUUM and ANALYZE
+2. Index maintenance
+3. Statistics updates
+4. Performance monitoring
+
+Example maintenance script:
+```sql
+-- Update statistics
+ANALYZE verbose;
+
+-- Rebuild indexes
+REINDEX DATABASE dbname;
+
+-- Vacuum analyze
+VACUUM ANALYZE;
+```
+
+## Security Guidelines
+
+### Access Control
+1. Use role-based access control
+2. Principle of least privilege
+3. Regular permission audits
+4. Strong password policies
+
+Example:
+```sql
+-- Create application role
+CREATE ROLE app_user WITH LOGIN PASSWORD 'secure_password';
+
+-- Grant specific permissions
+GRANT SELECT, INSERT, UPDATE ON job_applications TO app_user;
+GRANT USAGE ON SEQUENCE job_applications_id_seq TO app_user;
+```
+
+### Data Protection
+1. Encrypt sensitive data
+2. Use parameterized queries
+3. Implement row-level security
+4. Regular security audits
+
+Example:
+```python
+# Good - Parameterized query
+db.query(User).filter(User.email == email).first()
+
+# Bad - SQL Injection risk
+db.execute(f"SELECT * FROM users WHERE email = '{email}'")
+``` 

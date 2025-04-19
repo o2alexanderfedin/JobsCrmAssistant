@@ -1,0 +1,168 @@
+description: Defines standards for creating and managing GitHub issues
+globs: ["**"]
+alwaysApply: true
+
+---
+
+# GitHub Issue Standards
+
+This rule defines the standards for creating and managing GitHub issues to ensure consistency and clarity.
+
+## Issue Creation
+
+### Title Format
+- Format: `<type>: <description>`
+- Types:
+  - `feat`: New feature or enhancement
+  - `fix`: Bug fix
+  - `docs`: Documentation changes
+  - `refactor`: Code refactoring
+  - `test`: Testing improvements
+  - `chore`: Maintenance tasks
+- Example: `feat: Add Database Guidelines Rule`
+
+### Issue Body Structure
+```markdown
+# Issue Title (same as issue title without type prefix)
+
+## Description
+Clear, concise description of what needs to be done.
+
+## Requirements
+- Requirement 1
+- Requirement 2
+- Additional requirements
+
+## Implementation Steps
+1. First step
+2. Second step
+3. Additional steps as needed
+
+## Acceptance Criteria
+- [ ] Criterion 1
+- [ ] Criterion 2
+- [ ] Additional criteria
+
+## Technical Considerations
+- Consideration 1
+- Consideration 2
+- Additional considerations
+```
+
+### Labels
+- Required labels:
+  - Type: `enhancement`, `bug`, `documentation`, etc.
+  - Priority: `high`, `medium`, `low` (if applicable)
+  - Status: `blocked`, `in-progress`, etc. (if applicable)
+
+## Issue Management
+
+### Status Updates
+- Use checkboxes to track progress
+- Update labels to reflect current status
+- Comment on blockers or important updates
+
+### Closing Issues
+- Verify all acceptance criteria are met
+- Link related PRs
+- Add closing comments if needed
+
+## Examples
+
+### Feature Issue Example
+```markdown
+# Add Database Guidelines Rule
+
+## Description
+Create new rule file '240-database-guidelines.mdc' to define standards for database operations and management.
+
+## Requirements
+- Database schema management guidelines
+- Migration policies
+- Query optimization guidelines
+- Data modeling standards
+- Connection pooling configuration
+- Backup and recovery procedures
+
+## Implementation Steps
+1. Create rule file
+2. Define schema management guidelines
+3. Document migration policies
+4. Add query optimization best practices
+5. Define data modeling standards
+6. Document connection pooling configuration
+7. Add backup and recovery procedures
+
+## Acceptance Criteria
+- [ ] Rule file created with proper naming
+- [ ] All sections documented with clear examples
+- [ ] Guidelines are practical and implementable
+- [ ] Proper glob patterns defined
+- [ ] Documentation is clear and comprehensive
+
+## Technical Considerations
+- Consider different database types (SQL, NoSQL)
+- Include performance implications
+- Consider security aspects
+- Include monitoring recommendations
+```
+
+### Bug Issue Example
+```markdown
+# Fix Login Authentication Error
+
+## Description
+Users are experiencing intermittent 401 errors during login attempts.
+
+## Requirements
+- Identify root cause of authentication failures
+- Implement fix
+- Add logging for future debugging
+- Update error handling
+
+## Implementation Steps
+1. Analyze error logs
+2. Reproduce the issue
+3. Implement fix
+4. Add additional logging
+5. Test fix thoroughly
+
+## Acceptance Criteria
+- [ ] Authentication errors resolved
+- [ ] New logging implemented
+- [ ] Tests added/updated
+- [ ] No regression in other auth flows
+
+## Technical Considerations
+- Session management impact
+- Performance implications
+- Security considerations
+- Backward compatibility
+```
+
+## Command Line Creation
+
+To create issues with proper formatting using GitHub CLI:
+
+```bash
+gh issue create --title "type: Description" --body "# Title
+
+## Description
+Description text
+
+## Requirements
+- Requirement 1
+- Requirement 2
+
+## Implementation Steps
+1. Step 1
+2. Step 2
+
+## Acceptance Criteria
+- [ ] Criterion 1
+- [ ] Criterion 2
+
+## Technical Considerations
+- Consideration 1
+- Consideration 2" --label "enhancement" --label "documentation"
+``` 

@@ -1,0 +1,154 @@
+description: Defines the complete workflow for implementing new tasks
+globs: ["**"]
+alwaysApply: true
+
+---
+
+# Task Implementation Workflow
+
+This rule defines the complete process for implementing any new task, from creation to completion.
+
+## 1. Task Creation and Planning
+
+### 1.1 GitHub Issue Creation
+- Create a GitHub issue with:
+  - Clear title describing the task
+  - Detailed description of requirements
+  - Acceptance criteria
+  - Any relevant technical constraints
+  - Labels for proper categorization
+  - Milestone assignment if applicable
+
+Example using GitHub CLI:
+```bash
+# Create a new issue
+gh issue create --title "feat: Add New Feature" --body-file <(echo -e "# Feature Implementation\n\n## Description\nImplement new feature X\n\n## Requirements\n- Requirement 1\n- Requirement 2\n\n## Implementation Steps\n1. Step 1\n2. Step 2\n\n## Acceptance Criteria\n- [ ] Criteria 1\n- [ ] Criteria 2\n\n## Technical Considerations\n- Consideration 1\n- Consideration 2") --label "enhancement"
+
+# Update an existing issue
+gh issue edit <issue-number> --body-file <(echo -e "# Updated Content\n\n## New Section\n- New item")
+
+# View issue details
+gh issue view <issue-number>
+
+# List all issues
+gh issue list
+
+# Close an issue
+gh issue close <issue-number>
+
+# Reopen an issue
+gh issue reopen <issue-number>
+```
+
+### 1.2 Branch Creation
+- Follow branch naming convention: `<type>/<issue-number>-<description>`
+  - Types: `feature/`, `bugfix/`, `hotfix/`, `refactor/`
+  - Example: `feature/123-add-user-authentication`
+- Create branch from appropriate base:
+  - Features/Refactors: from `develop`
+  - Hotfixes: from `main`
+
+### 1.3 Implementation Planning
+- Document implementation approach in issue comments
+- Break down task into smaller steps
+- Identify potential risks and dependencies
+- List affected components/modules
+- Consider security implications
+- Plan for testing approach
+
+## 2. Implementation Process
+
+### 2.1 Setup Phase
+- Create new branch
+- Set up development environment
+- Review relevant documentation
+- Understand existing code
+
+### 2.2 Development Phase
+- Follow incremental development approach
+- Implement one component at a time
+- Regular commits with meaningful messages
+- Follow commit message format: `type(scope): description`
+- Keep changes focused and atomic
+- Add/update tests as you go
+- Update documentation when needed
+
+### 2.3 Quality Checks
+- Run tests frequently
+- Perform code self-review
+- Check against acceptance criteria
+- Verify security considerations
+- Review performance implications
+- Ensure logging is appropriate
+- Validate error handling
+
+## 3. Review and Testing
+
+### 3.1 Pre-PR Checklist
+- All tests passing
+- Code properly formatted
+- Documentation updated
+- No debug code remaining
+- Commits are clean and logical
+- Branch is up to date with base
+
+### 3.2 Testing Requirements
+- Unit tests for new functionality
+- Integration tests if applicable
+- Manual testing completed
+- Edge cases considered
+- Performance verified
+- Security validated
+
+### 3.3 Documentation Updates
+- Code comments where needed
+- API documentation if applicable
+- README updates if required
+- Architecture documentation if changed
+- Update changelog if applicable
+
+## 4. Pull Request
+
+### 4.1 PR Creation
+- Clear PR title following commit format
+- Detailed description of changes
+- Reference to original issue
+- Screenshots/videos if UI changes
+- List of testing performed
+- Note any breaking changes
+
+### 4.2 PR Review Process
+- Address reviewer comments
+- Keep PR updated with base branch
+- Update based on feedback
+- Request re-review when ready
+
+## 5. Completion
+
+### 5.1 Merge Requirements
+- All reviews approved
+- CI checks passing
+- No merge conflicts
+- All discussions resolved
+- Testing completed
+
+### 5.2 Post-Merge Tasks
+- Delete feature branch
+- Close related issues
+- Update project board
+- Notify stakeholders
+- Monitor deployment
+
+## 6. Monitoring and Validation
+
+### 6.1 Post-Deployment
+- Monitor logs for errors
+- Check performance metrics
+- Verify functionality in production
+- Document any issues found
+
+### 6.2 Task Closure
+- Verify all acceptance criteria met
+- Document any follow-up tasks
+- Update related documentation
+- Share knowledge with team 
