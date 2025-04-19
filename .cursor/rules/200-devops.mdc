@@ -1,6 +1,7 @@
 name: "DevOps Guidelines"
 description: "CI/CD processes and deployment guidelines for maintaining reliable operations"
 globs: [".github/**/*", "Dockerfile", "docker-compose*.yml"]
+autoAttach: true
 
 ---
 
