@@ -3,6 +3,8 @@ description: "Standards for naming variables, functions, files, and branches"
 globs: ["**/*.py", "**/*.md"]
 alwaysApply: true
 
+---
+
 # Naming Conventions
 
 ## Branch Naming

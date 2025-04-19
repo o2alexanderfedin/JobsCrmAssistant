@@ -1,12 +1,9 @@
----
-description: 
-globs: 
-alwaysApply: false
----
 name: "Testing Guidelines"
 description: "Testing strategies and conventions for ensuring code quality and reliability"
 globs: ["tests/**/*", "src/**/*_test.py", "src/**/*_tests.py", "src/**/*.spec.*", "src/**/*.test.*", "__tests__/**/*"]
 autoAttach: true
+
+---
 
 # Testing Guidelines
 

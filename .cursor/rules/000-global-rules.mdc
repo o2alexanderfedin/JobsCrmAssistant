@@ -3,6 +3,8 @@ description: "Core development principles and general guidelines applicable acro
 globs: ["**/*"]
 alwaysApply: true
 
+---
+
 # Global Development Rules
 
 ## General Development Process

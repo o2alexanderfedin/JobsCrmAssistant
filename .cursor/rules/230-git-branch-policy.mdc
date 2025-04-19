@@ -1,11 +1,8 @@
----
-description: 
-globs: 
-alwaysApply: false
----
 description: Defines git branching strategy and workflow rules
 globs: ["**"]
 alwaysApply: true
+
+---
 
 # Git Branch Policy
 
@@ -89,4 +86,4 @@ Examples:
 3. Delete branches after merging
 4. Use meaningful commit messages
 5. Keep PRs focused and small
-6. Regular commits with clear purposes
+6. Regular commits with clear purposes 

@@ -1,12 +1,9 @@
----
-description: 
-globs: 
-alwaysApply: false
----
 name: "Error Handling Guidelines"
 description: "Practices for managing errors, exceptions, and debugging processes"
 globs: ["src/**/*.py"]
 agentRequested: true
+
+---
 
 # Error Handling Guidelines
 

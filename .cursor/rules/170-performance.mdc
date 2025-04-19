@@ -1,11 +1,8 @@
----
-description: 
-globs: 
-alwaysApply: false
----
 name: "Performance Guidelines"
 description: "Performance optimization guidelines and best practices"
 globs: ["src/**/*.py"]
+
+---
 
 # Performance Guidelines
 
