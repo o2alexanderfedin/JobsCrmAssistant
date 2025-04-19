@@ -1,6 +1,7 @@
 name: "Documentation Guidelines"
 description: "Documentation standards and requirements for maintaining clear project documentation"
 globs: ["**/*.md", "src/**/*.py", "docs/**/*"]
+autoAttach: true
 
 ---
 
