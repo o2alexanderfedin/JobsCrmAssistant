@@ -1,1 +1,182 @@
- 
+---
+description: "Standards and guidelines for API versioning, ensuring consistent version management and backward compatibility"
+globs: ["**/api/**/*.py", "**/routes/**/*.py", "**/endpoints/**/*.py", "**/services/**/*.py"]
+alwaysApply: false
+---
+
+
+# API Versioning Guidelines
+
+This document defines the standards and guidelines for API versioning, ensuring consistent version management and backward compatibility across the application.
+
+## 1. Version Numbering Scheme
+
+### 1.1 API Version Format
+- Format: `v{major}.{minor}`
+  - Major: Breaking changes (e.g., `v2.0`)
+  - Minor: Backward-compatible changes (e.g., `v1.1`)
+- Examples:
+  ```
+  v1.0 - Initial stable release
+  v1.1 - New features, backward compatible
+  v2.0 - Breaking changes introduced
+  ```
+
+### 1.2 Version Communication
+- URL Path Versioning: `/api/v1/resource`
+- Header Versioning: `Accept: application/vnd.jobscrm.v1+json`
+- Query Parameter: `?api-version=1.0` (fallback only)
+
+## 2. Breaking Changes Policy
+
+### 2.1 What Constitutes Breaking Changes
+- Removing/renaming endpoints
+- Changing response structure
+- Modifying request parameters
+- Altering authentication methods
+- Changing error response formats
+
+### 2.2 Breaking Change Guidelines
+- Must increment major version
+- Maintain previous version support
+- Document all changes thoroughly
+- Provide migration guides
+- Allow transition period
+
+## 3. Backward Compatibility
+
+### 3.1 Compatibility Requirements
+- Maintain N-1 version support
+- Support rolling upgrades
+- Handle missing parameters
+- Preserve field order
+- Support old client behavior
+
+### 3.2 Implementation Guidelines
+```python
+# Example of backward compatible endpoint
+@router.get("/api/v2/users/{user_id}")
+async def get_user(
+    user_id: int,
+    include_legacy: bool = False,
+    api_version: str = "2.0"
+):
+    user = await get_user_data(user_id)
+    
+    if api_version.startswith("1"):
+        # Convert to v1 format
+        return {
+            "id": user.id,
+            "name": user.full_name,  # v1 used name instead of first_name/last_name
+            "email": user.email
+        }
+    
+    # v2 format
+    return {
+        "id": user.id,
+        "first_name": user.first_name,
+        "last_name": user.last_name,
+        "email": user.email,
+        "created_at": user.created_at
+    }
+```
+
+## 4. Deprecation Process
+
+### 4.1 Deprecation Timeline
+1. Announcement Phase (3 months)
+2. Deprecation Phase (3 months)
+3. Sunset Phase (1 month)
+4. Removal
+
+### 4.2 Deprecation Communication
+- Documentation updates
+- API response headers
+- Email notifications
+- In-app notifications
+- Status page updates
+
+### 4.3 Implementation
+```python
+def deprecated_header(api_version: str, sunset_date: str) -> Dict[str, str]:
+    return {
+        "Deprecation": "true",
+        "Sunset": sunset_date,
+        "Link": f"<https://api.docs/migrations/v{api_version}>; rel=\"deprecation\""
+    }
+
+@router.get("/api/v1/legacy", deprecated=True)
+async def legacy_endpoint():
+    headers = deprecated_header("1.0", "2024-12-31")
+    return JSONResponse(
+        content={"message": "This endpoint is deprecated"},
+        headers=headers
+    )
+```
+
+## 5. API Lifecycle Management
+
+### 5.1 Version Lifecycle Stages
+1. Development (Alpha)
+2. Preview (Beta)
+3. General Availability
+4. Deprecated
+5. Sunset
+6. Removed
+
+### 5.2 Documentation Requirements
+- Changelog maintenance
+- Migration guides
+- Version compatibility matrix
+- Known issues
+- Upgrade paths
+
+### 5.3 Version Support Matrix
+```
+Version | Status    | Released    | Deprecated  | Sunset
+--------|-----------|------------|-------------|--------
+v2.0    | Current   | 2024-01-01 | -          | -
+v1.1    | Supported | 2023-07-01 | 2024-07-01 | 2024-12-31
+v1.0    | Sunset    | 2023-01-01 | 2023-12-31 | 2024-03-31
+```
+
+## 6. Testing Requirements
+
+### 6.1 Version Testing
+- Test all supported versions
+- Cross-version compatibility
+- Upgrade path validation
+- Downgrade scenarios
+- Performance impact
+
+### 6.2 Test Implementation
+```python
+@pytest.mark.parametrize("api_version", ["1.0", "1.1", "2.0"])
+async def test_user_endpoint_versions(api_version):
+    response = await client.get(
+        "/api/v2/users/123",
+        headers={"Accept": f"application/vnd.jobscrm.{api_version}+json"}
+    )
+    assert response.status_code == 200
+    validate_version_schema(api_version, response.json())
+```
+
+## 7. Monitoring and Metrics
+
+### 7.1 Required Metrics
+- Version usage statistics
+- Deprecated endpoint calls
+- Error rates by version
+- Response times by version
+- Client distribution
+
+### 7.2 Alerting
+- Deprecated version usage spikes
+- Error rate increases
+- Performance degradation
+- Client version anomalies
+
+## 8. Related Rules
+- [150-api-guidelines.mdc](150-api-guidelines.mdc): API design standards
+- [170-performance.mdc](170-performance.mdc): Performance guidelines
+- [180-security.mdc](180-security.mdc): Security standards 
