@@ -1,0 +1,132 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Required Development Tools
+
+This document defines the mandatory tools required for project development, their installation procedures, and usage standards.
+
+## 1. Mandatory Tools
+
+### 1.1 GitHub CLI
+- Required version: Latest stable
+- Installation guides:
+  - macOS: `brew install gh`
+  - Linux: Follow [GitHub CLI installation](mdc:https:/github.com/cli/cli#installation)
+  - Windows: `winget install --id GitHub.cli`
+- Configuration required:
+  - Authentication: `gh auth login`
+  - Default git protocol: `gh config set git_protocol ssh`
+- Usage covered in: [236-github-cli-usage.mdc](mdc:236-github-cli-usage.mdc)
+
+### 1.2 Git
+- Required version: 2.x or higher
+- Installation guides:
+  - macOS: `brew install git`
+  - Linux: `apt-get install git` or distribution equivalent
+  - Windows: Download from git-scm.com
+- Configuration required:
+  - User name: `git config --global user.name "Your Name"`
+  - User email: `git config --global user.email "your.email@example.com"`
+  - Default branch: `git config --global init.defaultBranch main`
+
+### 1.3 Code Editor/IDE
+- Supported editors:
+  - VS Code (recommended)
+  - JetBrains IDEs
+  - Cursor
+- Required extensions:
+  - Git integration
+  - Language servers
+  - Linting support
+  - Formatting support
+
+## 2. Tool Verification
+
+### 2.1 Verification Script
+- Location: `scripts/verify-tools.sh`
+- Checks:
+  - Tool presence
+  - Version requirements
+  - Configuration status
+  - Required extensions
+
+### 2.2 Version Management
+- Regular version checks
+- Automated update notifications
+- Version compatibility matrix
+- Update procedures documented
+
+## 3. Configuration Management
+
+### 3.1 Configuration Files
+- Store in version control:
+  - Editor settings
+  - Linting rules
+  - Format configurations
+  - Extension lists
+- Exclude from version control:
+  - Personal preferences
+  - Authentication tokens
+  - Local overrides
+
+### 3.2 Configuration Standards
+- Use consistent formatting
+- Document all options
+- Provide default values
+- Include comments
+- Version control safe
+
+## 4. Usage Standards
+
+### 4.1 Common Patterns
+- Follow tool-specific guidelines
+- Use provided aliases/shortcuts
+- Implement automation where possible
+- Document custom workflows
+- Share best practices
+
+### 4.2 Integration Requirements
+- Tool interoperability
+- Workflow integration
+- CI/CD compatibility
+- Backup procedures
+- Recovery processes
+
+## 5. Security Considerations
+
+### 5.1 Access Control
+- Manage authentication securely
+- Use role-based access
+- Implement least privilege
+- Monitor tool access
+- Regular security reviews
+
+### 5.2 Data Protection
+- Secure configuration storage
+- Protect sensitive data
+- Encrypt credentials
+- Safe data transmission
+- Regular backups
+
+## 6. Maintenance
+
+### 6.1 Regular Tasks
+- Version updates
+- Security patches
+- Configuration reviews
+- Performance optimization
+- Usage audits
+
+### 6.2 Documentation
+- Installation guides
+- Configuration references
+- Usage examples
+- Troubleshooting guides
+- Update procedures
+
+## 7. Related Rules
+- [236-github-cli-usage.mdc](mdc:236-github-cli-usage.mdc): GitHub CLI usage guidelines
+- [230-git-branch-policy.mdc](mdc:230-git-branch-policy.mdc): Git branching strategy
+- [200-devops.mdc](mdc:200-devops.mdc): DevOps processes 
