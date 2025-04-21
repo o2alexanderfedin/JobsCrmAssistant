@@ -1,7 +1,7 @@
 ---
 description: "Standards for implementing internationalization across the application"
 globs: ["**/*.py", "**/*.js", "**/*.ts", "**/*.jsx", "**/*.tsx", "locales/**/*"]
-alwaysApply: true
+alwaysApply: false
 ---
 
 # Internationalization (i18n) Guidelines
@@ -165,9 +165,6 @@ def get_user_locale(request) -> str:
 ## Related Rules
 - [API Guidelines](150-api-guidelines.mdc)
 - [Error Handling](160-error-handling.mdc)
-- [Performance](170-performance.mdc) 
-
-## 10. Related Rules
-- [180-security.mdc](180-security.mdc): Security guidelines
-- [170-performance.mdc](170-performance.mdc): Performance optimization
-- [190-documentation.mdc](190-documentation.mdc): Documentation standards 
+- [Security guidelines](180-security.mdc)
+- [Performance optimization](170-performance.mdc)
+- [Documentation standards](190-documentation.mdc) 
