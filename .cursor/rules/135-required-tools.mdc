@@ -1,8 +1,8 @@
 ---
-description: 
-globs: 
-alwaysApply: false
+title: Required Development Tools
+description: This document defines the mandatory tools required for project development, their installation procedures, and usage standards.
 ---
+
 # Required Development Tools
 
 This document defines the mandatory tools required for project development, their installation procedures, and usage standards.
@@ -13,12 +13,12 @@ This document defines the mandatory tools required for project development, thei
 - Required version: Latest stable
 - Installation guides:
   - macOS: `brew install gh`
-  - Linux: Follow [GitHub CLI installation](mdc:https:/github.com/cli/cli#installation)
+  - Linux: Follow [GitHub CLI installation](https://github.com/cli/cli#installation)
   - Windows: `winget install --id GitHub.cli`
 - Configuration required:
   - Authentication: `gh auth login`
   - Default git protocol: `gh config set git_protocol ssh`
-- Usage covered in: [236-github-cli-usage.mdc](mdc:236-github-cli-usage.mdc)
+- Usage covered in: [236-github-cli-usage.mdc](236-github-cli-usage.mdc)
 
 ### 1.2 Git
 - Required version: 2.x or higher
@@ -127,6 +127,6 @@ This document defines the mandatory tools required for project development, thei
 - Update procedures
 
 ## 7. Related Rules
-- [236-github-cli-usage.mdc](mdc:236-github-cli-usage.mdc): GitHub CLI usage guidelines
-- [230-git-branch-policy.mdc](mdc:230-git-branch-policy.mdc): Git branching strategy
-- [200-devops.mdc](mdc:200-devops.mdc): DevOps processes 
+- [236-github-cli-usage.mdc](236-github-cli-usage.mdc): GitHub CLI usage guidelines
+- [230-git-branch-policy.mdc](230-git-branch-policy.mdc): Git branching strategy
+- [200-devops.mdc](200-devops.mdc): DevOps processes
