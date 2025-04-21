@@ -226,6 +226,6 @@ class LocaleService {
 - Escape special characters
 
 ## 10. Related Rules
-- [180-security.mdc](180-security.mdc): Security guidelines
-- [170-performance.mdc](170-performance.mdc): Performance optimization
-- [190-documentation.mdc](190-documentation.mdc): Documentation standards 
+- [180-security.mdc](mdc:180-security.mdc): Security guidelines
+- [170-performance.mdc](mdc:170-performance.mdc): Performance optimization
+- [190-documentation.mdc](mdc:190-documentation.mdc): Documentation standards 
