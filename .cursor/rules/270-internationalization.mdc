@@ -1,231 +1,173 @@
 ---
-description: 
-globs: 
-alwaysApply: false
+description: "Standards for implementing internationalization across the application"
+globs: ["**/*.py", "**/*.js", "**/*.ts", "**/*.jsx", "**/*.tsx", "locales/**/*"]
+alwaysApply: true
 ---
 
-# Internationalization Guidelines
+# Internationalization (i18n) Guidelines
 
-This document defines the standards and requirements for implementing internationalization (i18n) across the Jobs CRM Assistant project.
+## Overview
+This document defines standards for implementing internationalization across the application to ensure consistent handling of translations, date/time formats, currencies, and locale-specific content.
 
-## 1. Translation Management
+## Translation Management
 
-### 1.1 Translation Files
-- Use standard gettext `.po` files for Python backend
-- Use `i18next` compatible JSON files for frontend
-- Maintain separate translation files per language
-- Follow ISO 639-1 language codes
-- Include country variants when needed (e.g., `en-US`, `pt-BR`)
-
-### 1.2 Translation Workflow
-1. Extract translatable strings
-2. Update translation files
-3. Send to translators
-4. Review translations
-5. Compile and deploy
-
-### 1.3 String Management
-- Use translation keys in snake_case
-- Group related translations by feature
-- Provide context comments for translators
-- Support pluralization rules
-- Handle gender-specific translations
-
-Example structure:
+### Translation Files Structure
 ```
 locales/
 ├── en/
 │   ├── common.json
-│   ├── jobs.json
-│   └── profiles.json
-└── es/
-    ├── common.json
-    ├── jobs.json
-    └── profiles.json
+│   ├── errors.json
+│   └── features/
+│       ├── auth.json
+│       └── dashboard.json
+├── es/
+└── fr/
 ```
 
-## 2. Date and Time Formatting
+### Translation Keys
+- Use nested objects for better organization
+- Follow the format: `{namespace}.{feature}.{component}.{key}`
+- Example:
+```json
+{
+  "auth": {
+    "login": {
+      "title": "Welcome back",
+      "emailLabel": "Email address",
+      "passwordLabel": "Password"
+    }
+  }
+}
+```
 
-### 2.1 Storage Standards
-- Store all timestamps in UTC
-- Use ISO 8601 format
-- Include timezone information
-- Handle daylight saving transitions
-- Maintain precision requirements
+### Translation Process
+1. Extract translatable strings using i18next-parser
+2. Send to translation service via API
+3. Review and QA translations
+4. Deploy updated translations
 
-### 2.2 Display Guidelines
-- Format based on user's locale
-- Support multiple date formats
-- Handle timezone conversions
-- Implement relative time formatting
-- Consider cultural preferences
+### Best Practices
+- No hardcoded strings in components
+- Use ICU MessageFormat for plurals and variables
+- Maintain context comments for translators
+- Regular translation audits
 
-Example implementations:
+## Date and Time Formatting
+
+### Standards
+- Use ISO 8601 for data storage: `YYYY-MM-DDTHH:mm:ss.sssZ`
+- Display formats based on locale preferences
+- Include timezone information where relevant
+
+### Implementation
 ```python
-# Backend (Python)
 from datetime import datetime
 from babel.dates import format_datetime
 
 def format_date(date: datetime, locale: str) -> str:
     return format_datetime(date, locale=locale, format="medium")
-
-# Frontend (TypeScript)
-import { formatDate } from '@angular/common';
-
-formatDate(date, 'medium', locale);
 ```
 
-## 3. Number and Currency Formatting
+### Time Zones
+- Store all timestamps in UTC
+- Convert to user's timezone for display
+- Include timezone selector in user preferences
 
-### 3.1 Number Standards
-- Use locale-specific number formats
-- Handle decimal separators
-- Support grouping separators
-- Format percentages appropriately
-- Consider scientific notation
+## Currency Handling
 
-### 3.2 Currency Guidelines
-- Store amounts in smallest unit (cents)
-- Use ISO 4217 currency codes
-- Handle exchange rates
-- Format based on locale
-- Support multiple currencies
+### Standards
+- Store amounts as integers (cents)
+- Include currency code with all monetary values
+- Support major currencies (USD, EUR, GBP, etc.)
 
-Example:
-```typescript
-// Currency formatting
-const formatter = new Intl.NumberFormat(locale, {
-  style: 'currency',
-  currency: 'USD'
-});
+### Implementation
+```python
+from decimal import Decimal
+from babel.numbers import format_currency
+
+def format_amount(amount: Decimal, currency: str, locale: str) -> str:
+    return format_currency(amount, currency, locale=locale)
 ```
 
-## 4. RTL Support
+### Best Practices
+- Use appropriate decimal places per currency
+- Handle currency conversion rates
+- Display local currency by default
 
-### 4.1 Layout Requirements
+## RTL Support
+
+### Layout Requirements
 - Use CSS logical properties
 - Implement bidirectional text support
-- Handle text alignment automatically
-- Mirror icons and images when needed
-- Support mixed LTR/RTL content
+- Mirror layouts for RTL languages
 
-### 4.2 Implementation Guidelines
-- Use `dir` attribute appropriately
-- Implement CSS logical properties
-- Handle bidirectional text
-- Support dynamic switching
-- Test with RTL languages
-
-CSS example:
+### CSS Guidelines
 ```css
-/* Use logical properties */
 .container {
   margin-inline-start: 1rem;
-  padding-inline-end: 1rem;
-  border-inline: 1px solid;
+  margin-inline-end: 1rem;
+  text-align: start;
 }
 ```
 
-## 5. Locale Management
+### Testing
+- Test layouts in both LTR and RTL modes
+- Verify text alignment and flow
+- Check icon and image mirroring
 
-### 5.1 Locale Detection
+## Locale Management
+
+### Locale Detection
 1. User preference (if logged in)
-2. URL parameter
-3. Accept-Language header
-4. Browser settings
-5. Default locale (en-US)
+2. Accept-Language header
+3. Browser settings
+4. Default to English (en-US)
 
-### 5.2 Locale Switching
-- Handle dynamic locale changes
-- Update all formatted content
-- Persist user preference
-- Maintain URL parameters
-- Handle fallbacks gracefully
+### Locale Data
+- Include language name
+- Number formatting rules
+- Date/time formats
+- Currency preferences
 
-Implementation example:
-```typescript
-class LocaleService {
-  async switchLocale(locale: string): Promise<void> {
-    // 1. Update user preference
-    await this.userService.updateLocale(locale);
-    
-    // 2. Load locale data
-    await this.i18n.loadTranslations(locale);
-    
-    // 3. Update application state
-    this.store.dispatch(setLocale(locale));
-    
-    // 4. Refresh formatted content
-    this.events.emit('localeChanged', locale);
-  }
-}
+### Implementation
+```python
+def get_user_locale(request) -> str:
+    if user := request.user:
+        return user.preferred_locale
+    return request.headers.get('Accept-Language', 'en-US').split(',')[0]
 ```
 
-## 6. Content Management
+## Performance Considerations
 
-### 6.1 Content Types
-- Static text
-- Dynamic content
-- Images and media
-- Documents and files
-- Email templates
+### Loading Strategies
+- Load translations asynchronously
+- Bundle common translations
+- Implement locale-specific code splitting
 
-### 6.2 Content Guidelines
-- Separate content from code
-- Support variable interpolation
-- Handle plural forms
-- Manage formatting tokens
-- Support rich text content
-
-## 7. Testing Requirements
-
-### 7.1 Test Coverage
-- Unit tests for formatting
-- Integration tests for locale switching
-- Visual tests for RTL layouts
-- Accessibility testing
-- Performance testing
-
-### 7.2 Test Cases
-- Verify translations
-- Check date/time formatting
-- Validate number formatting
-- Test RTL layouts
-- Verify locale switching
-
-## 8. Performance Considerations
-
-### 8.1 Optimization Strategies
-- Lazy load translations
-- Cache formatted values
-- Optimize bundle sizes
-- Implement loading indicators
-- Monitor performance metrics
-
-### 8.2 Bundle Management
-- Split translations by language
-- Load translations on demand
+### Caching
 - Cache translation files
-- Optimize asset delivery
-- Monitor bundle sizes
+- Store user locale preferences
+- Cache formatted dates/numbers
 
-## 9. Security Guidelines
+## Monitoring and Metrics
 
-### 9.1 Input Validation
-- Sanitize user input
-- Validate locale codes
-- Check translation keys
-- Prevent injection attacks
-- Handle malformed input
+### Key Metrics
+- Missing translations
+- Translation load times
+- Locale distribution
+- Error rates per locale
 
-### 9.2 Output Encoding
-- Encode translated text
-- Handle HTML content safely
-- Prevent XSS attacks
-- Validate formatting tokens
-- Escape special characters
+### Alerts
+- Translation coverage < 95%
+- Missing critical translations
+- Formatting errors
+
+## Related Rules
+- [API Guidelines](150-api-guidelines.mdc)
+- [Error Handling](160-error-handling.mdc)
+- [Performance](170-performance.mdc) 
 
 ## 10. Related Rules
-- [180-security.mdc](mdc:180-security.mdc): Security guidelines
-- [170-performance.mdc](mdc:170-performance.mdc): Performance optimization
-- [190-documentation.mdc](mdc:190-documentation.mdc): Documentation standards 
+- [180-security.mdc](180-security.mdc): Security guidelines
+- [170-performance.mdc](170-performance.mdc): Performance optimization
+- [190-documentation.mdc](190-documentation.mdc): Documentation standards 

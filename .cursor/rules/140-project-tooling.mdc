@@ -1,1 +1,240 @@
- 
+---
+description: "Standards for build systems, development scripts, and automation tools"
+globs: ["scripts/**/*", "tools/**/*", "Makefile", "package.json", "*.mk"]
+alwaysApply: true
+---
+
+# Project Tooling Standards
+
+This document defines standards for build systems, development scripts, and automation tools. It complements the existing architecture and DevOps guidelines.
+
+## 1. Project Tool Structure
+
+### 1.1 Directory Layout
+```
+project_root/
+├── scripts/           # Task automation scripts
+│   ├── dev/          # Development workflow scripts
+│   ├── build/        # Build-related scripts
+│   ├── deploy/       # Deployment scripts
+│   └── utils/        # Utility scripts and shared functions
+├── tools/            # Development tools and utilities
+│   ├── generators/   # Code generation tools
+│   ├── linters/      # Custom linting rules
+│   └── hooks/        # Git hooks
+└── Makefile          # Main task runner
+```
+
+### 1.2 Script Categories
+- `dev/`: Local development tasks (setup, clean, reset)
+- `build/`: Build process scripts (compile, package, bundle)
+- `deploy/`: Deployment and release scripts
+- `utils/`: Shared utilities and helper functions
+- `tools/`: Project-specific development tools
+
+## 2. Build System Standards
+
+### 2.1 Task Runner
+- Use `make` as the primary task runner
+- Define common targets in root `Makefile`
+- Group related tasks in separate `.mk` files
+- Document all targets with help text
+
+Example `Makefile`:
+```makefile
+.PHONY: help setup test build
+
+help: ## Show this help
+	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
+
+setup: ## Setup development environment
+	./scripts/dev/setup.sh
+
+test: ## Run tests
+	./scripts/dev/test.sh
+
+build: ## Build the project
+	./scripts/build/build.sh
+```
+
+### 2.2 Task Naming Conventions
+- Use lowercase with hyphens
+- Group related tasks with prefixes
+- Include verb in task name
+- Examples:
+  - `dev-setup`
+  - `build-prod`
+  - `test-unit`
+  - `deploy-staging`
+
+### 2.3 Task Documentation
+- Add help text for each task
+- Document dependencies between tasks
+- Include examples for complex tasks
+- Specify required environment variables
+
+## 3. Script Standards
+
+### 3.1 Script Organization
+- One primary function per script
+- Keep scripts focused and minimal
+- Use shared functions for common operations
+- Follow shell script best practices
+
+### 3.2 Common Utilities
+Create shared utility functions in `scripts/utils/`:
+```bash
+# scripts/utils/logging.sh
+log_info() {
+    echo "[INFO] $1"
+}
+
+log_error() {
+    echo "[ERROR] $1" >&2
+}
+
+# scripts/utils/validation.sh
+check_command() {
+    command -v "$1" >/dev/null 2>&1 || {
+        log_error "Required command not found: $1"
+        exit 1
+    }
+}
+```
+
+### 3.3 Error Handling
+- Set appropriate shell options
+- Check command existence
+- Validate input parameters
+- Handle edge cases
+- Provide meaningful error messages
+
+Example:
+```bash
+#!/usr/bin/env bash
+set -euo pipefail
+
+source ./scripts/utils/logging.sh
+source ./scripts/utils/validation.sh
+
+main() {
+    check_command "docker"
+    check_command "docker-compose"
+    
+    if [ $# -lt 1 ]; then
+        log_error "Usage: $0 <environment>"
+        exit 1
+    fi
+    
+    # Script logic here
+}
+
+main "$@"
+```
+
+## 4. Development Tools
+
+### 4.1 Code Generators
+- Place in `tools/generators/`
+- Document usage and options
+- Include templates
+- Validate generated output
+
+### 4.2 Git Hooks
+- Store in `tools/hooks/`
+- Use pre-commit for linting
+- Add pre-push for tests
+- Include commit message validation
+
+Example pre-commit hook:
+```bash
+#!/usr/bin/env bash
+# tools/hooks/pre-commit
+
+# Run linters
+make lint
+
+# Run unit tests
+make test-unit
+```
+
+### 4.3 Custom Tools
+- Document purpose and usage
+- Include setup instructions
+- Specify dependencies
+- Provide examples
+
+## 5. Task Automation
+
+### 5.1 Common Tasks
+Define automation for common operations:
+```makefile
+# Development
+dev-setup: ## Setup development environment
+	./scripts/dev/setup.sh
+
+dev-clean: ## Clean development environment
+	./scripts/dev/clean.sh
+
+# Testing
+test-unit: ## Run unit tests
+	./scripts/dev/test-unit.sh
+
+test-integration: ## Run integration tests
+	./scripts/dev/test-integration.sh
+
+# Building
+build-dev: ## Build for development
+	./scripts/build/build.sh dev
+
+build-prod: ## Build for production
+	./scripts/build/build.sh prod
+```
+
+### 5.2 Task Dependencies
+- Document dependencies between tasks
+- Use make's dependency system
+- Handle conditional execution
+- Prevent redundant operations
+
+Example:
+```makefile
+build-prod: test-unit lint ## Build for production after tests and linting
+	./scripts/build/build.sh prod
+```
+
+## 6. Integration with Other Rules
+
+### 6.1 DevOps Integration
+- Support CI/CD pipelines from [200-devops.mdc](200-devops.mdc)
+- Provide deployment scripts
+- Include monitoring setup
+- Support rollback procedures
+
+### 6.2 Architecture Compliance
+- Follow structure from [100-architecture.mdc](100-architecture.mdc)
+- Support modular organization
+- Maintain separation of concerns
+- Enable easy navigation
+
+### 6.3 Dependency Management
+- Support package management from [130-dependencies.mdc](130-dependencies.mdc)
+- Include dependency scripts
+- Handle version management
+- Support multiple platforms
+
+## 7. Maintenance
+
+### 7.1 Script Updates
+- Review scripts regularly
+- Update dependencies
+- Remove obsolete scripts
+- Document changes
+- Test modifications
+
+### 7.2 Documentation
+- Maintain README files
+- Update help text
+- Document new features
+- Include troubleshooting guides
+- Provide usage examples 
