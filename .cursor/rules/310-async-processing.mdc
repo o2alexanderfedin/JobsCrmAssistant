@@ -1,1 +1,311 @@
- 
+# Asynchronous Processing Guidelines
+
+This document defines the standards and guidelines for implementing and managing asynchronous operations in the application.
+
+## 1. Queue Management
+
+### 1.1 Queue Types
+- Task Queues: Short-lived tasks (< 5 minutes)
+- Job Queues: Long-running tasks (> 5 minutes)
+- Priority Queues: Time-sensitive operations
+- Dead Letter Queues: Failed task handling
+
+### 1.2 Queue Configuration
+```python
+from celery import Celery
+from kombu import Queue, Exchange
+
+# Queue definitions
+CELERY_QUEUES = (
+    Queue('default', Exchange('default'), routing_key='default'),
+    Queue('high_priority', Exchange('high_priority'), routing_key='high_priority'),
+    Queue('long_running', Exchange('long_running'), routing_key='long_running'),
+    Queue('dead_letter', Exchange('dead_letter'), routing_key='dead_letter'),
+)
+
+# Queue settings
+CELERY_TASK_ROUTES = {
+    'app.tasks.critical.*': {'queue': 'high_priority'},
+    'app.tasks.jobs.*': {'queue': 'long_running'},
+    'app.tasks.*': {'queue': 'default'},
+}
+```
+
+### 1.3 Queue Monitoring
+- Queue depth monitoring
+- Processing rate tracking
+- Latency measurements
+- Resource utilization
+- Error rate tracking
+
+## 2. Background Job Standards
+
+### 2.1 Job Structure
+```python
+from celery import Task
+from typing import Any, Dict
+
+class BaseJobTask(Task):
+    abstract = True
+    max_retries = 3
+    retry_backoff = True
+    retry_backoff_max = 600  # 10 minutes
+    
+    def on_failure(self, exc, task_id, args, kwargs, einfo):
+        """Handle task failure."""
+        self.log_failure(task_id, exc)
+        super().on_failure(exc, task_id, args, kwargs, einfo)
+    
+    def on_retry(self, exc, task_id, args, kwargs, einfo):
+        """Handle task retry."""
+        self.log_retry(task_id, exc)
+        super().on_retry(exc, task_id, args, kwargs, einfo)
+
+@app.task(base=BaseJobTask)
+def process_job(job_data: Dict[str, Any]) -> Dict[str, Any]:
+    """Process a background job with proper error handling."""
+    try:
+        # Initialize progress tracking
+        track_progress(0, "Starting job processing")
+        
+        # Validate input
+        validated_data = validate_job_data(job_data)
+        track_progress(20, "Data validated")
+        
+        # Process job
+        result = perform_job_operations(validated_data)
+        track_progress(80, "Core processing complete")
+        
+        # Finalize and cleanup
+        final_result = finalize_job(result)
+        track_progress(100, "Job completed")
+        
+        return final_result
+        
+    except ValidationError as e:
+        handle_validation_error(e)
+        raise
+    except ProcessingError as e:
+        handle_processing_error(e)
+        raise
+```
+
+### 2.2 Job Categories
+1. Data Processing Jobs
+   - ETL operations
+   - Data cleanup
+   - Report generation
+2. Integration Jobs
+   - External API calls
+   - Data synchronization
+   - File processing
+3. Maintenance Jobs
+   - Database cleanup
+   - Cache invalidation
+   - Log rotation
+
+### 2.3 Job Scheduling
+```python
+# Scheduled job definition
+@app.task(bind=True)
+def scheduled_cleanup(self):
+    """Daily cleanup task."""
+    schedule = crontab(hour=3, minute=0)  # Run at 3 AM
+    self.apply_async(schedule=schedule)
+```
+
+## 3. Retry Policies
+
+### 3.1 Retry Configuration
+```python
+class RetryConfig:
+    # Maximum retry attempts
+    MAX_RETRIES = {
+        'critical': 5,
+        'standard': 3,
+        'low': 1
+    }
+    
+    # Retry intervals (in seconds)
+    RETRY_DELAYS = {
+        'critical': [60, 300, 900, 1800, 3600],  # 1min to 1hr
+        'standard': [300, 900, 1800],  # 5min to 30min
+        'low': [600]  # 10min
+    }
+    
+    # Retry conditions
+    RETRY_ON_EXCEPTIONS = {
+        'network': (ConnectionError, TimeoutError),
+        'database': (DatabaseError, DeadlockError),
+        'integration': (APIError, ServiceUnavailable)
+    }
+```
+
+### 3.2 Exponential Backoff
+```python
+def calculate_backoff(attempt: int, base_delay: int = 60) -> int:
+    """Calculate exponential backoff delay."""
+    return min(base_delay * (2 ** attempt), 3600)  # Max 1 hour
+```
+
+## 4. Failure Handling
+
+### 4.1 Error Categories
+1. Transient Failures
+   - Network timeouts
+   - Rate limits
+   - Resource constraints
+2. Permanent Failures
+   - Invalid data
+   - Permission errors
+   - Business rule violations
+
+### 4.2 Failure Handling Implementation
+```python
+class FailureHandler:
+    def handle_failure(self, task_id: str, exception: Exception) -> None:
+        """Handle task failure with appropriate strategy."""
+        if self.is_transient_error(exception):
+            self.handle_transient_failure(task_id, exception)
+        else:
+            self.handle_permanent_failure(task_id, exception)
+    
+    def handle_transient_failure(self, task_id: str, exception: Exception) -> None:
+        """Handle temporary failures with retry logic."""
+        if self.should_retry(task_id):
+            self.schedule_retry(task_id)
+        else:
+            self.move_to_dead_letter(task_id)
+    
+    def handle_permanent_failure(self, task_id: str, exception: Exception) -> None:
+        """Handle permanent failures with notification and logging."""
+        self.log_permanent_failure(task_id, exception)
+        self.notify_stakeholders(task_id, exception)
+        self.cleanup_resources(task_id)
+```
+
+## 5. Progress Tracking
+
+### 5.1 Progress Storage
+```python
+from redis import Redis
+from typing import Optional
+
+class ProgressTracker:
+    def __init__(self):
+        self.redis = Redis()
+        self.key_prefix = "job_progress:"
+    
+    def update_progress(
+        self,
+        job_id: str,
+        percentage: int,
+        status: str,
+        details: Optional[Dict] = None
+    ) -> None:
+        """Update job progress information."""
+        key = f"{self.key_prefix}{job_id}"
+        progress_data = {
+            "percentage": percentage,
+            "status": status,
+            "details": details or {},
+            "updated_at": datetime.utcnow().isoformat()
+        }
+        self.redis.set(key, json.dumps(progress_data))
+        self.redis.expire(key, 86400)  # 24 hours TTL
+```
+
+### 5.2 Progress Reporting
+```python
+class ProgressReporter:
+    def __init__(self, job_id: str):
+        self.job_id = job_id
+        self.tracker = ProgressTracker()
+    
+    def report_progress(
+        self,
+        percentage: int,
+        message: str,
+        additional_info: Optional[Dict] = None
+    ) -> None:
+        """Report job progress with detailed information."""
+        self.tracker.update_progress(
+            self.job_id,
+            percentage,
+            message,
+            additional_info
+        )
+        
+        # Emit progress event
+        self.emit_progress_event(percentage, message)
+        
+        # Log progress
+        logger.info(
+            f"Job {self.job_id} progress: {percentage}% - {message}",
+            extra={"job_id": self.job_id, "percentage": percentage}
+        )
+```
+
+## 6. Monitoring and Metrics
+
+### 6.1 Key Metrics
+- Task throughput
+- Processing time
+- Error rates
+- Queue lengths
+- Resource utilization
+- Success/failure ratios
+
+### 6.2 Monitoring Implementation
+```python
+from prometheus_client import Counter, Histogram, Gauge
+
+# Metrics definitions
+TASK_COUNTER = Counter(
+    'async_tasks_total',
+    'Total number of async tasks',
+    ['task_type', 'status']
+)
+
+PROCESSING_TIME = Histogram(
+    'task_processing_seconds',
+    'Time spent processing tasks',
+    ['task_type']
+)
+
+QUEUE_SIZE = Gauge(
+    'queue_size',
+    'Current queue size',
+    ['queue_name']
+)
+```
+
+## 7. Resource Management
+
+### 7.1 Resource Limits
+- Worker concurrency limits
+- Memory thresholds
+- CPU utilization caps
+- Network bandwidth limits
+- Storage quotas
+
+### 7.2 Resource Configuration
+```python
+# Celery worker configuration
+CELERY_WORKER_CONCURRENCY = 8
+CELERY_WORKER_PREFETCH_MULTIPLIER = 1
+CELERY_WORKER_MAX_TASKS_PER_CHILD = 100
+CELERY_WORKER_MEMORY_LIMIT = '512MB'
+
+# Queue-specific limits
+QUEUE_RATE_LIMITS = {
+    'high_priority': '100/s',
+    'default': '50/s',
+    'long_running': '5/s'
+}
+```
+
+## 8. Related Rules
+- [170-performance.mdc](170-performance.mdc): Performance guidelines
+- [180-security.mdc](180-security.mdc): Security standards
+- [240-database-guidelines.mdc](240-database-guidelines.mdc): Database operations 
