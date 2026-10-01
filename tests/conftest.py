@@ -6,6 +6,6 @@ from jobs_crm_assistant.api.app import app
 
 
 @pytest.fixture
-def client():
+def client() -> TestClient:
     """Create a test client for the FastAPI application."""
     return TestClient(app)
