@@ -37,4 +37,4 @@ autoAttach: true
 - Identify bottlenecks
 - Implement improvements
 - Verify improvements
-- Document optimizations 
+- Document optimizations

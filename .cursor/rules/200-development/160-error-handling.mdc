@@ -39,4 +39,4 @@ autoAttach: true
 - Use appropriate log levels
 - Structure error messages
 - Include error codes
-- Document error scenarios 
+- Document error scenarios

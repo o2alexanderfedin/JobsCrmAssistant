@@ -120,12 +120,12 @@ source ./scripts/utils/validation.sh
 main() {
     check_command "docker"
     check_command "docker-compose"
-    
+
     if [ $# -lt 1 ]; then
         log_error "Usage: $0 <environment>"
         exit 1
     fi
-    
+
     # Script logic here
 }
 
@@ -237,4 +237,4 @@ build-prod: test-unit lint ## Build for production after tests and linting
 - Update help text
 - Document new features
 - Include troubleshooting guides
-- Provide usage examples 
+- Provide usage examples

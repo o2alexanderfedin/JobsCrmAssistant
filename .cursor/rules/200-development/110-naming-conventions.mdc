@@ -44,4 +44,4 @@ alwaysApply: true
   - `chore`: Maintenance tasks
 - Scope: Component or module affected
 - Description: Clear, concise explanation
-- Example: `feat(job-search): add LinkedIn job board integration` 
+- Example: `feat(job-search): add LinkedIn job board integration`

@@ -1,6 +1,6 @@
 ---
-description: 
-globs: 
+description:
+globs:
 alwaysApply: false
 ---
 description: Defines git branching strategy and workflow rules
@@ -99,4 +99,4 @@ Examples:
 3. Keep release branches for rollback capability
 4. Use meaningful commit messages
 5. Keep PRs focused and small
-6. Regular commits with clear purposes 
+6. Regular commits with clear purposes

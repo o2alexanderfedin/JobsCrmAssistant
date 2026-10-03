@@ -28,4 +28,4 @@ autoAttach: true
 - Test with latest compatible versions
 - Document version constraints
 - Review security advisories
-- Update dependencies regularly 
+- Update dependencies regularly

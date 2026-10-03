@@ -50,12 +50,12 @@ class BaseJobTask(Task):
     max_retries = 3
     retry_backoff = True
     retry_backoff_max = 600  # 10 minutes
-    
+
     def on_failure(self, exc, task_id, args, kwargs, einfo):
         """Handle task failure."""
         self.log_failure(task_id, exc)
         super().on_failure(exc, task_id, args, kwargs, einfo)
-    
+
     def on_retry(self, exc, task_id, args, kwargs, einfo):
         """Handle task retry."""
         self.log_retry(task_id, exc)
@@ -67,21 +67,21 @@ def process_job(job_data: Dict[str, Any]) -> Dict[str, Any]:
     try:
         # Initialize progress tracking
         track_progress(0, "Starting job processing")
-        
+
         # Validate input
         validated_data = validate_job_data(job_data)
         track_progress(20, "Data validated")
-        
+
         # Process job
         result = perform_job_operations(validated_data)
         track_progress(80, "Core processing complete")
-        
+
         # Finalize and cleanup
         final_result = finalize_job(result)
         track_progress(100, "Job completed")
-        
+
         return final_result
-        
+
     except ValidationError as e:
         handle_validation_error(e)
         raise
@@ -125,14 +125,14 @@ class RetryConfig:
         'standard': 3,
         'low': 1
     }
-    
+
     # Retry intervals (in seconds)
     RETRY_DELAYS = {
         'critical': [60, 300, 900, 1800, 3600],  # 1min to 1hr
         'standard': [300, 900, 1800],  # 5min to 30min
         'low': [600]  # 10min
     }
-    
+
     # Retry conditions
     RETRY_ON_EXCEPTIONS = {
         'network': (ConnectionError, TimeoutError),
@@ -169,14 +169,14 @@ class FailureHandler:
             self.handle_transient_failure(task_id, exception)
         else:
             self.handle_permanent_failure(task_id, exception)
-    
+
     def handle_transient_failure(self, task_id: str, exception: Exception) -> None:
         """Handle temporary failures with retry logic."""
         if self.should_retry(task_id):
             self.schedule_retry(task_id)
         else:
             self.move_to_dead_letter(task_id)
-    
+
     def handle_permanent_failure(self, task_id: str, exception: Exception) -> None:
         """Handle permanent failures with notification and logging."""
         self.log_permanent_failure(task_id, exception)
@@ -195,7 +195,7 @@ class ProgressTracker:
     def __init__(self):
         self.redis = Redis()
         self.key_prefix = "job_progress:"
-    
+
     def update_progress(
         self,
         job_id: str,
@@ -221,7 +221,7 @@ class ProgressReporter:
     def __init__(self, job_id: str):
         self.job_id = job_id
         self.tracker = ProgressTracker()
-    
+
     def report_progress(
         self,
         percentage: int,
@@ -235,10 +235,10 @@ class ProgressReporter:
             message,
             additional_info
         )
-        
+
         # Emit progress event
         self.emit_progress_event(percentage, message)
-        
+
         # Log progress
         logger.info(
             f"Job {self.job_id} progress: {percentage}% - {message}",
@@ -308,4 +308,4 @@ QUEUE_RATE_LIMITS = {
 ## 8. Related Rules
 - [170-performance.mdc](170-performance.mdc): Performance guidelines
 - [180-security.mdc](180-security.mdc): Security standards
-- [240-database-guidelines.mdc](240-database-guidelines.mdc): Database operations 
+- [240-database-guidelines.mdc](240-database-guidelines.mdc): Database operations

@@ -21,4 +21,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Basic test infrastructure with pytest
 - Project documentation
 - Dependency management with pyproject.toml
-- Git workflow rules and documentation 
+- Git workflow rules and documentation

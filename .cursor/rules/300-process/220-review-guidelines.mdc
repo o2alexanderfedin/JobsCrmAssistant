@@ -1,6 +1,6 @@
 ---
-description: 
-globs: 
+description:
+globs:
 alwaysApply: false
 ---
 description: Defines PR review behavior and standards for the AI assistant
@@ -72,4 +72,4 @@ When providing review feedback:
 
 - Keep comments focused, respectful, and specific
 - Provide reasoning or link to a convention when making a suggestion
-- Group feedback logically (naming, logic, test coverage, style) 
+- Group feedback logically (naming, logic, test coverage, style)

@@ -1,6 +1,6 @@
 ---
-description: 
-globs: 
+description:
+globs:
 alwaysApply: false
 ---
 name: "GitHub CLI Usage Guidelines"
@@ -137,4 +137,4 @@ gh issue comment 123 --body <(echo -e "# Implementation Details\n\n## Approach\n
 3. Properly structure markdown with headers and sections
 4. Escape special characters when needed
 5. Use consistent formatting across all commands
-6. Include appropriate level of detail for the context 
+6. Include appropriate level of detail for the context

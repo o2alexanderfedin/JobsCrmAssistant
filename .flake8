@@ -1,0 +1,5 @@
+[flake8]
+# Match black (pyproject.toml: line-length = 88). E203 is the
+# whitespace-before-colon check that black's slice formatting breaks.
+max-line-length = 88
+extend-ignore = E203

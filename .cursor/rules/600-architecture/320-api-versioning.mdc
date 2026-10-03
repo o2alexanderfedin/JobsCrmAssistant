@@ -62,7 +62,7 @@ async def get_user(
     api_version: str = "2.0"
 ):
     user = await get_user_data(user_id)
-    
+
     if api_version.startswith("1"):
         # Convert to v1 format
         return {
@@ -70,7 +70,7 @@ async def get_user(
             "name": user.full_name,  # v1 used name instead of first_name/last_name
             "email": user.email
         }
-    
+
     # v2 format
     return {
         "id": user.id,
@@ -179,4 +179,4 @@ async def test_user_endpoint_versions(api_version):
 ## 8. Related Rules
 - [150-api-guidelines.mdc](150-api-guidelines.mdc): API design standards
 - [170-performance.mdc](170-performance.mdc): Performance guidelines
-- [180-security.mdc](180-security.mdc): Security standards 
+- [180-security.mdc](180-security.mdc): Security standards

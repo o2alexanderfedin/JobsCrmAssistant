@@ -167,4 +167,4 @@ def get_user_locale(request) -> str:
 - [Error Handling](160-error-handling.mdc)
 - [Security guidelines](180-security.mdc)
 - [Performance optimization](170-performance.mdc)
-- [Documentation standards](190-documentation.mdc) 
+- [Documentation standards](190-documentation.mdc)
