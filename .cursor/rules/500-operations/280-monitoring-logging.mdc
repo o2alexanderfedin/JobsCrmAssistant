@@ -32,7 +32,7 @@ class LogEntry:
         self.message = message
         self.level = level
         self.context = context or {}
-    
+
     def to_dict(self) -> Dict[str, Any]:
         """Convert log entry to dictionary."""
         return {
@@ -41,7 +41,7 @@ class LogEntry:
             "message": self.message,
             "context": self.context
         }
-    
+
     def to_json(self) -> str:
         """Convert log entry to JSON string."""
         return json.dumps(self.to_dict())
@@ -142,10 +142,10 @@ ACTIVE_USERS = MetricDefinition(
 # Metric implementation
 class MetricsManager:
     """Manage application metrics."""
-    
+
     def __init__(self):
         self.metrics = {}
-        
+
     def create_metric(
         self,
         definition: MetricDefinition
@@ -233,7 +233,7 @@ class AlertRule:
 # Example alert rules
 class AlertRules:
     """Collection of alert rules."""
-    
+
     @staticmethod
     def high_error_rate() -> AlertRule:
         """Alert on high error rate."""
@@ -247,7 +247,7 @@ class AlertRules:
             severity="critical",
             runbook_url="/runbooks/high-error-rate"
         )
-    
+
     @staticmethod
     def high_latency() -> AlertRule:
         """Alert on high latency."""
@@ -306,7 +306,7 @@ class TraceContext:
     parent_id: Optional[str]
     sampled: bool
     baggage: Dict[str, str]
-    
+
     @classmethod
     def create_root(cls) -> 'TraceContext':
         """Create a root trace context."""
@@ -317,7 +317,7 @@ class TraceContext:
             sampled=True,
             baggage={}
         )
-    
+
     def create_child(self) -> 'TraceContext':
         """Create a child trace context."""
         return TraceContext(
@@ -337,10 +337,10 @@ import time
 
 class Tracer:
     """Application tracer implementation."""
-    
+
     def __init__(self):
         self.current_context = None
-    
+
     @contextmanager
     def start_span(
         self,
@@ -352,10 +352,10 @@ class Tracer:
             context = TraceContext.create_root()
         elif self.current_context:
             context = self.current_context.create_child()
-        
+
         start_time = time.time()
         self.current_context = context
-        
+
         try:
             yield context
         finally:
@@ -363,7 +363,7 @@ class Tracer:
             # Export span data
             self._export_span(name, context, duration)
             self.current_context = None
-    
+
     def _export_span(
         self,
         name: str,
@@ -405,7 +405,7 @@ class HealthCheck:
     check_type: str  # db, cache, api, etc.
     endpoint: Optional[str] = None
     timeout: float = 5.0
-    
+
     async def check(self) -> Dict[str, Any]:
         """Perform health check."""
         try:
@@ -422,12 +422,12 @@ class HealthCheck:
                 "status": HealthStatus.UNHEALTHY,
                 "error": str(e)
             }
-    
+
     async def _check_api(self) -> Dict[str, Any]:
         """Check external API health."""
         if not self.endpoint:
             raise ValueError("Endpoint required for API check")
-        
+
         async with aiohttp.ClientSession() as session:
             try:
                 async with session.get(
@@ -448,29 +448,29 @@ class HealthCheck:
 
 class HealthChecker:
     """Manage application health checks."""
-    
+
     def __init__(self):
         self.checks: List[HealthCheck] = []
-    
+
     def add_check(self, check: HealthCheck) -> None:
         """Add a health check."""
         self.checks.append(check)
-    
+
     async def run_checks(self) -> Dict[str, Any]:
         """Run all health checks."""
         results = {}
         overall_status = HealthStatus.HEALTHY
-        
+
         for check in self.checks:
             result = await check.check()
             results[check.name] = result
-            
+
             if result["status"] == HealthStatus.UNHEALTHY:
                 overall_status = HealthStatus.UNHEALTHY
             elif result["status"] == HealthStatus.DEGRADED and \
                  overall_status != HealthStatus.UNHEALTHY:
                 overall_status = HealthStatus.DEGRADED
-        
+
         return {
             "status": overall_status,
             "checks": results,
@@ -517,13 +517,13 @@ for check in HEALTH_CHECKS:
 async def health_check():
     """Health check endpoint."""
     result = await health_checker.run_checks()
-    
+
     if result["status"] == HealthStatus.UNHEALTHY:
         raise HTTPException(
             status_code=HTTP_503_SERVICE_UNAVAILABLE,
             detail=result
         )
-    
+
     return result
 ```
 
@@ -537,7 +537,7 @@ import traceback
 
 class DebugConfig:
     """Debug mode configuration."""
-    
+
     def __init__(
         self,
         enabled: bool = False,
@@ -548,7 +548,7 @@ class DebugConfig:
         self.log_level = log_level
         self.trace_all = trace_all
         self._setup_logging()
-    
+
     def _setup_logging(self) -> None:
         """Configure logging for debug mode."""
         if self.enabled:
@@ -557,7 +557,7 @@ class DebugConfig:
                 format='%(asctime)s [%(levelname)s] '
                        '%(filename)s:%(lineno)d: %(message)s'
             )
-    
+
     def handle_exception(
         self,
         exc: Exception,
@@ -569,7 +569,7 @@ class DebugConfig:
             stack_trace = ''.join(
                 traceback.format_exception(*exc_info)
             )
-            
+
             log_entry = LogEntry(
                 message=f"Exception: {str(exc)}",
                 level=LogLevel.ERROR,
@@ -589,7 +589,7 @@ import time
 
 class DebugTools:
     """Collection of debugging tools."""
-    
+
     @staticmethod
     def inspect_object(
         obj: Any,
@@ -598,13 +598,13 @@ class DebugTools:
         """Inspect object attributes and methods."""
         if max_depth <= 0:
             return str(obj)
-        
+
         result = {
             "type": type(obj).__name__,
             "attributes": {},
             "methods": []
         }
-        
+
         # Inspect attributes
         for attr in dir(obj):
             if not attr.startswith('_'):
@@ -626,23 +626,23 @@ class DebugTools:
                 except Exception as e:
                     result["attributes"][attr] = \
                         f"Error accessing: {str(e)}"
-        
+
         return result
-    
+
     @staticmethod
     def profile_function(func: Callable) -> Callable:
         """Decorator to profile function execution."""
         def wrapper(*args, **kwargs):
             start_time = time.time()
             start_memory = psutil.Process().memory_info().rss
-            
+
             try:
                 result = func(*args, **kwargs)
                 return result
             finally:
                 end_time = time.time()
                 end_memory = psutil.Process().memory_info().rss
-                
+
                 profile_data = {
                     "function": func.__name__,
                     "execution_time": end_time - start_time,
@@ -650,9 +650,9 @@ class DebugTools:
                     "args": str(args),
                     "kwargs": str(kwargs)
                 }
-                
+
                 logging.debug(
                     f"Function profile: {json.dumps(profile_data)}"
                 )
-        
-        return wrapper 
+
+        return wrapper

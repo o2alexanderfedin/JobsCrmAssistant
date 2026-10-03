@@ -44,4 +44,4 @@ autoAttach: true
 - Monitor deployments
 - Set up alerts
 - Document procedures
-- Maintain deployment logs 
+- Maintain deployment logs

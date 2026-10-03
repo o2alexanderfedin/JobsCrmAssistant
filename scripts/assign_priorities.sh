@@ -19,7 +19,7 @@ issues=$(gh issue list --json number,title,body,labels --jq '.[] | select(([.lab
 for issue in $issues; do
     # Get issue details
     body=$(gh issue view $issue --json body --jq .body)
-    
+
     # Apply priority based on keywords
     if echo "$body" | grep -iE "security|data|critical|urgent|blocking|incident|compliance" > /dev/null; then
         echo "Assigning high priority to issue #$issue"
@@ -33,4 +33,4 @@ for issue in $issues; do
     fi
 done
 
-echo "Priority assignment complete!" 
+echo "Priority assignment complete!"

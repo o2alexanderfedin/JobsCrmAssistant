@@ -26,7 +26,16 @@ repos:
         additional_dependencies: [flake8-docstrings]
 
 -   repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.6.0
+    rev: v2.4.0
     hooks:
     -   id: mypy
-        additional_dependencies: [types-all] 
+        # The real libraries, so that the pydantic.mypy plugin in
+        # pyproject.toml loads; types-all can no longer be installed.
+        additional_dependencies:
+        -   pydantic>=2.5.0
+        -   pydantic-settings>=2.0.0
+        -   fastapi>=0.104.0
+        -   loguru>=0.7.0
+        -   pytest>=7.4.0
+        -   httpx>=0.25.0
+        -   packaging>=23.0

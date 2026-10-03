@@ -50,4 +50,4 @@ MIT License
 
 ## Contact
 
-For questions and support, please open an issue in the repository. 
+For questions and support, please open an issue in the repository.

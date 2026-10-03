@@ -3,7 +3,7 @@ description: "Standards and guidelines for creating and maintaining rule files"
 globs: [".cursor/rules/*.mdc"]
 alwaysApply: true
 ---
- 
+
 # Rule File Standards
 
 This document defines the standards and guidelines for creating and maintaining rule files in the Jobs CRM Assistant project.
@@ -89,4 +89,4 @@ Example: `195-rule-file-standards.mdc`
 
 ## 5. Related Rules
 - [000-global-rules.mdc](000-global-rules.mdc): Core development principles
-- [190-documentation.mdc](190-documentation.mdc): Documentation standards 
+- [190-documentation.mdc](190-documentation.mdc): Documentation standards

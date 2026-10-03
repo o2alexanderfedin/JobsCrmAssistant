@@ -35,4 +35,4 @@ autoAttach: true
 - Include relevant context in log messages
 - Use consistent log message format
 - Log important state changes
-- Include error details in exception logs 
+- Include error details in exception logs

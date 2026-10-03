@@ -37,4 +37,4 @@ autoAttach: true
 - Track failed attempts
 - Set up security alerts
 - Regular security audits
-- Keep dependencies updated 
+- Keep dependencies updated

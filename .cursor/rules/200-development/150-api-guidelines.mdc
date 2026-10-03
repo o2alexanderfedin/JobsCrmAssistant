@@ -37,4 +37,4 @@ autoAttach: true
 - Include example requests/responses
 - Document error responses
 - Keep documentation up to date
-- Include usage examples 
+- Include usage examples

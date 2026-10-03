@@ -35,4 +35,4 @@ autoAttach: true
    - Run tests after changes
    - Review logs
    - Fix any linter errors
-   - Document remaining issues 
+   - Document remaining issues
