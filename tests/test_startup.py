@@ -75,3 +75,13 @@ def test_server_starts_and_answers_health(tmp_path: Path) -> None:
         except subprocess.TimeoutExpired:
             server.kill()
             server.wait()
+
+
+def test_readme_documents_the_install_and_start_commands() -> None:
+    """The README must give the commands this file proves to work."""
+    readme = (Path(__file__).resolve().parent.parent / "README.md").read_text(
+        encoding="utf-8"
+    )
+
+    assert 'pip install -e ".[dev]"' in readme
+    assert f"uvicorn {APP}" in readme

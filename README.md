@@ -29,16 +29,56 @@ JobsCRMAssistant/
 
 ## Setup
 
-1. Clone the repository
-2. Install dependencies
-3. Configure environment variables
-4. Run the application
+These steps install the package from `pyproject.toml` and start the API
+server.
+
+```bash
+git clone https://github.com/o2alexanderfedin/JobsCrmAssistant.git
+cd JobsCrmAssistant
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -e ".[dev]"
+```
+
+`requirements.txt` is not the install path: it does not install the
+package itself, so the server cannot find `jobs_crm_assistant`.
+
+### Environment variables
+
+Set them in the shell, or in a `.env` file in the directory you start
+the server from.
+
+- `OPENAI_API_KEY`: your OpenAI API key. The current API does not call
+  OpenAI yet, so the server also starts without it.
+- `CORS_ORIGINS`: the websites allowed to call the API from a browser,
+  as a JSON list, for example `CORS_ORIGINS='["http://localhost:3000"]'`.
+  A plain URL without the brackets and quotes stops the server at
+  startup. The default is an empty list: no other website may call it.
+
+```bash
+export OPENAI_API_KEY=sk-your-key
+```
+
+### Run the server
+
+```bash
+uvicorn jobs_crm_assistant.api.app:app
+```
+
+Then open http://127.0.0.1:8000/health (it answers
+`{"status":"healthy"}`) or http://127.0.0.1:8000/docs.
+
+### Run the tests and checks
+
+```bash
+pytest
+pre-commit run --all-files
+```
 
 ## Requirements
 
-- Python 3.8+
+- Python 3.9 or newer (see `pyproject.toml`)
 - OpenAI API key
-- Other dependencies (to be listed in requirements.txt)
 
 ## Contributing
 
